@@ -94,7 +94,7 @@ jobs:
       id: version_step # step id used as reference for output values
       uses: gittools/actions/gitversion/execute@v3.1.11
       with:
-        updateProjectFiles: true
+        updateAssemblyInfo: true
         
     - name: Output the FullSemVer variable
       uses: gittools/actions/gitversion/command@v3.1.11
