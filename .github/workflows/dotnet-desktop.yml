@@ -84,3 +84,19 @@ jobs:
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
+        
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v3.1.11
+      with:
+        versionSpec: '6.0.x'
+        
+    - name: Determine Version
+      id: version_step # step id used as reference for output values
+      uses: gittools/actions/gitversion/execute@v3.1.11
+      with:
+        updateProjectFiles: true
+        
+    - name: Output the FullSemVer variable
+      uses: gittools/actions/gitversion/command@v3.1.11
+      with:
+        arguments: '/showvariable FullSemVer'
