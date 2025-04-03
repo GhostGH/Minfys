@@ -3,13 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Minfys"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        xmlns:windows="clr-namespace:Minfys.ViewModels.Windows"
+        d:DataContext="{d:DesignInstance Type=windows:MainViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="550" Width="400"
-        Style="{StaticResource MaterialDesignWindow}"
-        >
-    <Grid ShowGridLines="False" >
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -32,28 +33,25 @@
             Grid.Row="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Width="Auto"
-            >
-            <materialDesign:PackIcon Kind="Settings"/>
+            Width="Auto">
+            <materialDesign:PackIcon Kind="Settings" />
         </Button>
         <Border
             Grid.Column="1"
             Grid.Row="0"
             Grid.ColumnSpan="3"
-            Grid.RowSpan="2" 
+            Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             BorderBrush="Aqua"
             BorderThickness="2"
-            Margin="15"
-            >
+            Margin="15">
             <TextBlock
-                Name="TimerTextBlock"
+                Name="TimerCountdownTextBlock"
                 FontSize="30"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                >
-                <TextBlock.Text>Timer</TextBlock.Text>
+                VerticalAlignment="Center">
+                <TextBlock Text="{Binding DisplayTime}" />
             </TextBlock>
         </Border>
         <TextBlock
@@ -63,31 +61,30 @@
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            >
-            Current Interval
+            Text="{Binding CurrentInterval}">
         </TextBlock>
-        <Button 
-            Name="StartButton"
-            Grid.Column="1" 
+        <Button
+            Name="StartTimerButton"
+            Grid.Column="1"
             Grid.Row="4"
             Grid.ColumnSpan="3"
-            >
+            Command="{Binding StartTimerCommand}">
             Start
         </Button>
-        <Button 
-            Name="StopButton"
+        <Button
+            Name="StopTimerButton"
             Grid.Column="1"
             Grid.Row="5"
             Grid.ColumnSpan="3"
-            >
+            Command="{Binding StopTimerCommand}">
             Stop
         </Button>
         <Button
-            Name="ChangeIntervalButton"
+            Name="ChangeTimerIntervalButton"
             Grid.Column="1"
             Grid.Row="6"
             Grid.ColumnSpan="3"
-            >
+            Command="{Binding ChangeIntervalCommand}">
             Change the interval
         </Button>
     </Grid>

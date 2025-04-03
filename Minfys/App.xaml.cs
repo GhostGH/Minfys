@@ -1,7 +1,11 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Minfys.Services;
+using Minfys.ViewModels.Windows;
+using Minfys.Views.Windows;
 using Serilog;
+using MainViewModel = Minfys.ViewModels.Windows.MainViewModel;
 
 namespace Minfys;
 
@@ -19,7 +23,18 @@ public partial class App : Application
             {
                 loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
             })
-            .ConfigureServices(service => { service.AddSingleton<MainWindow>(); }).Build();
+            .ConfigureServices(service =>
+            {
+                service.AddSingleton<MainWindow>();
+                service.AddTransient<ChangeTimerIntervalDialog>();
+
+                service.AddTransient<MainViewModel>();
+                service.AddTransient<ChangeTimerIntervalDialogViewModel>();
+
+
+                service.AddSingleton<IMessageService, MessageService>();
+                service.AddSingleton<IDialogService, DialogService>();
+            }).Build();
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -31,7 +46,7 @@ public partial class App : Application
         mainWindow.Show();
 
         base.OnStartup(e);
-        Log.Information("Host start successful");
+        Log.Information("Host started");
     }
 
     protected override async void OnExit(ExitEventArgs e)
@@ -42,7 +57,7 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            Log.Fatal("Error while stopping host: " + exception.Message);
+            Log.Fatal(exception, "Error while stopping host: {ErrorMessage}", exception.Message);
         }
         finally
         {
