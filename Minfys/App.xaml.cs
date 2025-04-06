@@ -1,10 +1,6 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-using System.Windows.Documents;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Minfys.ViewModels;
 
 namespace Minfys;
 
@@ -17,12 +13,7 @@ public partial class App : Application
 
     public App()
     {
-        Host.CreateDefaultBuilder().ConfigureServices(service =>
-        {
-            service.AddSingleton<MainWindow>();
-            
-
-        }).Build();
+        Host.CreateDefaultBuilder().ConfigureServices(service => { service.AddSingleton<MainWindow>(); }).Build();
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -31,7 +22,7 @@ public partial class App : Application
 
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
-        
+
         base.OnStartup(e);
     }
 
@@ -49,7 +40,7 @@ public partial class App : Application
         {
             _host.Dispose();
         }
-        
+
         base.OnExit(e);
     }
 }
