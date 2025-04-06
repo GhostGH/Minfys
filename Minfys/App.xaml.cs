@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Minfys;
 
@@ -9,21 +10,28 @@ namespace Minfys;
 /// </summary>
 public partial class App : Application
 {
-    private IHost _host;
+    private readonly IHost _host;
 
     public App()
     {
-        Host.CreateDefaultBuilder().ConfigureServices(service => { service.AddSingleton<MainWindow>(); }).Build();
+        _host = Host.CreateDefaultBuilder()
+            .UseSerilog((hostContext, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
+            })
+            .ConfigureServices(service => { service.AddSingleton<MainWindow>(); }).Build();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        Log.Information("Starting host");
         _host.Start();
 
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
 
         base.OnStartup(e);
+        Log.Information("Host start successful");
     }
 
     protected override async void OnExit(ExitEventArgs e)
@@ -34,10 +42,11 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine("Error while stopping host: " + exception.Message);
+            Log.Fatal("Error while stopping host: " + exception.Message);
         }
         finally
         {
+            Log.CloseAndFlush();
             _host.Dispose();
         }
 
