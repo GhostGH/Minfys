@@ -4,11 +4,91 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minfys"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="550" Width="400"
         Style="{StaticResource MaterialDesignWindow}"
         >
-    <Grid>
-
+    <Grid ShowGridLines="False" >
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button
+            Name="SettingsButton"
+            Grid.Column="0"
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="Auto"
+            >
+            <materialDesign:PackIcon Kind="Settings"/>
+        </Button>
+        <Border
+            Grid.Column="1"
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="2" 
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            BorderBrush="Aqua"
+            BorderThickness="2"
+            Margin="15"
+            >
+            <TextBlock
+                Name="TimerTextBlock"
+                FontSize="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                >
+                <TextBlock.Text>Timer</TextBlock.Text>
+            </TextBlock>
+        </Border>
+        <TextBlock
+            Name="CurrentTimerIntervalTextBlock"
+            Grid.Column="1"
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            >
+            Current Interval
+        </TextBlock>
+        <Button 
+            Name="StartButton"
+            Grid.Column="1" 
+            Grid.Row="4"
+            Grid.ColumnSpan="3"
+            >
+            Start
+        </Button>
+        <Button 
+            Name="StopButton"
+            Grid.Column="1"
+            Grid.Row="5"
+            Grid.ColumnSpan="3"
+            >
+            Stop
+        </Button>
+        <Button
+            Name="ChangeIntervalButton"
+            Grid.Column="1"
+            Grid.Row="6"
+            Grid.ColumnSpan="3"
+            >
+            Change the interval
+        </Button>
     </Grid>
 </Window>
