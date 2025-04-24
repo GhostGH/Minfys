@@ -1,1 +1,1 @@
-Mindulness reminder.
+Mindfulness reminder.
