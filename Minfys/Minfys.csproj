@@ -41,7 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
+        <Folder Include="Assets\Audio\"/>
         <Folder Include="ViewModels\Pages\"/>
         <Folder Include="Views\Pages\"/>
         <Folder Include="Views\UserControls\"/>

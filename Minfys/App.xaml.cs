@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Minfys.Models;
 using Minfys.Services;
 using Minfys.ViewModels.Windows;
 using Minfys.Views.Windows;
@@ -23,7 +24,7 @@ public partial class App : Application
             {
                 loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
             })
-            .ConfigureServices(service =>
+            .ConfigureServices((ctx, service) =>
             {
                 service.AddSingleton<MainWindow>();
                 service.AddTransient<ChangeTimerIntervalDialog>();
@@ -34,6 +35,8 @@ public partial class App : Application
 
                 service.AddSingleton<IMessageService, MessageService>();
                 service.AddSingleton<IDialogService, DialogService>();
+
+                service.Configure<AudioSettings>(ctx.Configuration.GetSection("AudioSettings"));
             }).Build();
     }
 

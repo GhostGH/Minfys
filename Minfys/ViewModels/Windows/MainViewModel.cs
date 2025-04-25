@@ -11,7 +11,8 @@ public partial class MainViewModel : ViewModelBase
     private readonly ILogger<MainViewModel> _logger;
     private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
-    private DispatcherTimer _timer;
+    private readonly DispatcherTimer _timer;
+
     private DateTime _endTime;
 
     // Used for proper time calculations
