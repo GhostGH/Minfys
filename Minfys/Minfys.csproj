@@ -7,7 +7,6 @@
         <WarningsAsErrors>nullable</WarningsAsErrors>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +16,7 @@
       <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
         <PackageReference Include="MvvmDialogs" Version="9.1.2"/>
+        <PackageReference Include="NAudio" Version="2.2.1"/>
       <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
@@ -45,6 +45,13 @@
         <Folder Include="ViewModels\Pages\"/>
         <Folder Include="Views\Pages\"/>
         <Folder Include="Views\UserControls\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Assets\Audio\default_song.mp3"/>
+        <Content Include="Assets\Audio\default_song.mp3">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

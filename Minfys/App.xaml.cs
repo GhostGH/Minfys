@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Text.Json;
+using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Minfys.Models;
@@ -16,27 +19,56 @@ namespace Minfys;
 public partial class App : Application
 {
     private readonly IHost _host;
+    private readonly string _userConfigPath;
 
     public App()
     {
+        var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var userDir = Path.Combine(appdata, "Minfys");
+        Directory.CreateDirectory(userDir);
+        _userConfigPath = Path.Combine(userDir, "userPreferences.json");
+
+        if (!File.Exists(_userConfigPath))
+        {
+            var defaultSettings = new
+            {
+                AudioOptions = new
+                {
+                    LoopEnabled = true
+                }
+            };
+
+            File.WriteAllText(_userConfigPath, JsonSerializer.Serialize(defaultSettings));
+        }
+
         _host = Host.CreateDefaultBuilder()
             .UseSerilog((hostContext, loggerConfiguration) =>
             {
                 loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
             })
-            .ConfigureServices((ctx, service) =>
+            .ConfigureAppConfiguration((hostContext, config) =>
+            {
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                config.AddJsonFile(_userConfigPath, optional: true, reloadOnChange: true);
+            })
+            .ConfigureServices((hostContext, service) =>
             {
                 service.AddSingleton<MainWindow>();
                 service.AddTransient<ChangeTimerIntervalDialog>();
+                service.AddTransient<OptionsDialog>();
 
                 service.AddTransient<MainViewModel>();
                 service.AddTransient<ChangeTimerIntervalDialogViewModel>();
+                service.AddSingleton<TempOptionsViewModel>();
+                service.AddTransient<OptionsDialogViewModel>();
 
 
                 service.AddSingleton<IMessageService, MessageService>();
                 service.AddSingleton<IDialogService, DialogService>();
+                service.AddSingleton<ISettingsService, SettingsService>();
 
-                service.Configure<AudioSettings>(ctx.Configuration.GetSection("AudioSettings"));
+                service.AddOptions<AudioOptions>()
+                    .Bind(hostContext.Configuration.GetSection(AudioOptions.Key));
             }).Build();
     }
 
@@ -60,7 +92,7 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            Log.Fatal(exception, "Error while stopping host: {ErrorMessage}", exception.Message);
+            Log.Fatal(exception, "Error while stopping host: {Message}", exception.Message);
         }
         finally
         {
