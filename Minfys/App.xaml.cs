@@ -34,7 +34,9 @@ public partial class App : Application
             {
                 AudioOptions = new
                 {
-                    LoopEnabled = true
+                    FilePath =
+                        "C://Programming projects//C#//Projects//Minfys//Minfys//Assets//Audio//default_song.mp3",
+                    LoopEnabled = false
                 }
             };
 
