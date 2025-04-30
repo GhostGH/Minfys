@@ -31,6 +31,9 @@ public class DialogService : IDialogService
         window.Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
         window.DataContext = viewModel;
 
+        Window ownerWindow = window.Owner!;
+        ownerWindow.Opacity = 0.7;
+
         TResult? result = default;
 
         viewModel.RequestClose += (s, e) =>
@@ -38,6 +41,7 @@ public class DialogService : IDialogService
             result = e.Result;
             window.DialogResult = e.DialogResult;
             window.Close();
+            ownerWindow.Opacity = 1;
         };
 
         var dialogResult = window.ShowDialog();
