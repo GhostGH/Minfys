@@ -13,6 +13,7 @@
                 HorizontalAlignment="Center">
         <!-- <Label FontSize="25">Settings</Label> -->
         <CheckBox Content="Loop song" FontSize="15"
-                  IsChecked="{Binding }" />
+                  IsChecked="{Binding LoopEnabled}"
+                  Command="{Binding LoopOptionChangedCommand}" />
     </StackPanel>
 </Window>

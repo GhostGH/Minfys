@@ -23,8 +23,8 @@ public partial class App : Application
 
     public App()
     {
-        var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var userDir = Path.Combine(appdata, "Minfys");
+        string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string userDir = Path.Combine(appdata, "Minfys");
         Directory.CreateDirectory(userDir);
         _userConfigPath = Path.Combine(userDir, "userPreferences.json");
 
@@ -35,12 +35,17 @@ public partial class App : Application
                 AudioOptions = new
                 {
                     FilePath =
-                        "C://Programming projects//C#//Projects//Minfys//Minfys//Assets//Audio//default_song.mp3",
+                        "C://Programming projects//C#//Projects//Minfys//Minfys//Assets//Audio//quest_ding_1.mp3",
                     LoopEnabled = false
+                },
+                SystemOptions = new
+                {
+                    LaunchInSystemTray = false
                 }
             };
 
-            File.WriteAllText(_userConfigPath, JsonSerializer.Serialize(defaultSettings));
+            File.WriteAllText(_userConfigPath, JsonSerializer.Serialize(defaultSettings,
+                new JsonSerializerOptions { WriteIndented = true }));
         }
 
         _host = Host.CreateDefaultBuilder()
@@ -61,16 +66,18 @@ public partial class App : Application
 
                 service.AddTransient<MainViewModel>();
                 service.AddTransient<ChangeTimerIntervalDialogViewModel>();
-                service.AddSingleton<TempOptionsViewModel>();
                 service.AddTransient<OptionsDialogViewModel>();
 
 
                 service.AddSingleton<IMessageService, MessageService>();
                 service.AddSingleton<IDialogService, DialogService>();
-                service.AddSingleton<ISettingsService, SettingsService>();
+                service.AddSingleton(provider => _userConfigPath);
+                service.AddSingleton<IOptionsService, OptionsService>();
 
                 service.AddOptions<AudioOptions>()
                     .Bind(hostContext.Configuration.GetSection(AudioOptions.Key));
+                service.AddOptions<SystemOptions>()
+                    .Bind(hostContext.Configuration.GetSection(SystemOptions.Key));
             }).Build();
     }
 

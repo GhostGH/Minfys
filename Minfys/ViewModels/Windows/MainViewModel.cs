@@ -14,8 +14,8 @@ public partial class MainViewModel : ViewModelBase
     private readonly ILogger<MainViewModel> _logger;
     private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
-    private readonly AudioOptions _audioOptions;
     private readonly DispatcherTimer _timer;
+    private readonly AudioOptions _audioOptions;
     private bool _loopEnabled;
     private WaveOutEvent? _waveOut;
     private LoopStream? _loopStream;
@@ -52,6 +52,7 @@ public partial class MainViewModel : ViewModelBase
         DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
 
         _timer.Tick += TimerOnTick;
+        audioOptions.OnChange(AudioOptionsUpdated);
         _logger.LogInformation("{ViewModel} created", nameof(MainViewModel));
     }
 
@@ -129,5 +130,10 @@ public partial class MainViewModel : ViewModelBase
         }
 
         DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
+    }
+
+    private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
+    {
+        _loopEnabled = arg1.LoopEnabled;
     }
 }
