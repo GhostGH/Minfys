@@ -12,34 +12,59 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     private readonly ILogger<OptionsDialogViewModel> _logger;
     private readonly IOptionsService _optionsService;
     private readonly AudioOptions _audioOptions;
+    private readonly TimerModesOptions _timerModesOptions;
 
     [ObservableProperty] private string? _songPath;
     [ObservableProperty] private bool _loopEnabled;
+    [ObservableProperty] private float _audioVolume;
+
+    public float AudioVolumePercent
+    {
+        get => AudioVolume * 100;
+        set
+        {
+            AudioVolume = value / 100;
+            OnPropertyChanged();
+        }
+    }
+
+    [ObservableProperty] private TimerModesOptions.TimerModesEnum _timerMode;
 
     public OptionsDialogViewModel(ILogger<OptionsDialogViewModel> logger, IOptionsService optionsService,
-        IOptionsMonitor<AudioOptions> audioOptions)
+        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModsOptions)
     {
         _logger = logger;
         _optionsService = optionsService;
         _audioOptions = audioOptions.CurrentValue;
+        _timerModesOptions = timerModsOptions.CurrentValue;
 
         _songPath = _audioOptions.FilePath;
         _loopEnabled = _audioOptions.LoopEnabled;
+        _audioVolume = _audioOptions.Volume;
 
-        audioOptions.OnChange(AudioOptionsUpdates);
+        _timerMode = _timerModesOptions.TimerMode;
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
 
     [RelayCommand]
-    private void LoopOptionChanged()
+    private void SaveSettings()
     {
+        _timerModesOptions.TimerMode = TimerMode;
+        _audioOptions.Volume = AudioVolume;
         _audioOptions.LoopEnabled = LoopEnabled;
+
+        _optionsService.Save(_timerModesOptions, TimerModesOptions.Key);
         _optionsService.Save(_audioOptions, AudioOptions.Key);
+
+        CloseWindow();
     }
 
-    private void AudioOptionsUpdates(AudioOptions arg1, string? arg2)
+    [RelayCommand]
+    private void CloseWindow()
     {
+        _logger.LogInformation("Closing settings");
+        RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<object>(true));
     }
 
     public event EventHandler<RequestCloseDialogEventArgs<object>>? RequestClose;

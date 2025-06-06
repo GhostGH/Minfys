@@ -66,27 +66,27 @@
         </TextBlock>
         <Button
             Name="StartTimerButton"
+            Content="Start"
             Grid.Column="1"
             Grid.Row="4"
             Grid.ColumnSpan="3"
-            Command="{Binding StartTimerCommand}">
-            Start
-        </Button>
+            FontSize="20"
+            Command="{Binding StartTimerCommand}" />
         <Button
             Name="StopTimerButton"
+            Content="Stop"
             Grid.Column="1"
             Grid.Row="5"
             Grid.ColumnSpan="3"
-            Command="{Binding StopTimerCommand}">
-            Stop
-        </Button>
+            FontSize="20"
+            Command="{Binding StopTimerCommand}" />
         <Button
             Name="ChangeTimerIntervalButton"
+            Content="Change the interval"
             Grid.Column="1"
             Grid.Row="6"
             Grid.ColumnSpan="3"
-            Command="{Binding ChangeIntervalCommand}">
-            Change the interval
-        </Button>
+            FontSize="20"
+            Command="{Binding ChangeIntervalCommand}" />
     </Grid>
 </Window>

@@ -3,5 +3,5 @@
 public class SystemOptions
 {
     public const string Key = "SystemOptions";
-    public bool LaunchInSystemTray { get; set; }
+    public bool LaunchInSystemTray { get; set; } = false;
 }

@@ -16,11 +16,12 @@ public partial class MainViewModel : ViewModelBase
     private readonly IDialogService _dialogService;
     private readonly DispatcherTimer _timer;
     private readonly AudioOptions _audioOptions;
+    private string _filePath;
     private bool _loopEnabled;
-    private WaveOutEvent? _waveOut;
+    private float _audioVolume;
+    private WaveOut? _waveOut;
     private LoopStream? _loopStream;
     private AudioFileReader? _audioFileReader;
-    private string _filePath;
 
     private DateTime _endTime;
 
@@ -43,6 +44,7 @@ public partial class MainViewModel : ViewModelBase
         _audioOptions = audioOptions.CurrentValue;
         _filePath = _audioOptions.FilePath;
         _loopEnabled = _audioOptions.LoopEnabled;
+        _audioVolume = _audioOptions.Volume;
 
         _timer = new DispatcherTimer
         {
@@ -91,30 +93,34 @@ public partial class MainViewModel : ViewModelBase
 
     private void PlaySound(bool loopEnabled)
     {
-        if (_waveOut == null)
+        if (_waveOut != null)
         {
-            _audioFileReader = new AudioFileReader(_filePath);
-            _loopStream = new LoopStream(_audioFileReader)
-            {
-                EnableLooping = loopEnabled
-            };
-
-            _waveOut = new WaveOutEvent();
-            _waveOut.Init(_loopStream);
-            _waveOut.Play();
+            StopSound();
         }
-        else
+
+        _audioFileReader = new AudioFileReader(_filePath);
+        _audioFileReader.Volume = _audioVolume;
+        _loopStream = new LoopStream(_audioFileReader)
         {
-            _waveOut.Stop();
-            _waveOut.Dispose();
-            _waveOut = null;
+            EnableLooping = loopEnabled
+        };
 
-            _loopStream?.Dispose();
-            _loopStream = null;
+        _waveOut = new WaveOut();
+        _waveOut.Init(_loopStream);
+        _waveOut.Play();
+    }
 
-            _audioFileReader?.Dispose();
-            _audioFileReader = null;
-        }
+    private void StopSound()
+    {
+        _waveOut?.Stop();
+        _waveOut?.Dispose();
+        _waveOut = null;
+
+        _loopStream?.Dispose();
+        _loopStream = null;
+
+        _audioFileReader?.Dispose();
+        _audioFileReader = null;
     }
 
     private void TimerOnTick(object? sender, EventArgs e)
@@ -135,5 +141,6 @@ public partial class MainViewModel : ViewModelBase
     private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
     {
         _loopEnabled = arg1.LoopEnabled;
+        _audioVolume = arg1.Volume;
     }
 }

@@ -30,22 +30,10 @@ public partial class App : Application
 
         if (!File.Exists(_userConfigPath))
         {
-            var defaultSettings = new
-            {
-                AudioOptions = new
-                {
-                    FilePath =
-                        "C://Programming projects//C#//Projects//Minfys//Minfys//Assets//Audio//quest_ding_1.mp3",
-                    LoopEnabled = false
-                },
-                SystemOptions = new
-                {
-                    LaunchInSystemTray = false
-                }
-            };
-
-            File.WriteAllText(_userConfigPath, JsonSerializer.Serialize(defaultSettings,
-                new JsonSerializerOptions { WriteIndented = true }));
+            var defaultPrefs = new UserPreferences();
+            var json = JsonSerializer.Serialize(defaultPrefs,
+                new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(_userConfigPath, json);
         }
 
         _host = Host.CreateDefaultBuilder()
@@ -78,6 +66,8 @@ public partial class App : Application
                     .Bind(hostContext.Configuration.GetSection(AudioOptions.Key));
                 service.AddOptions<SystemOptions>()
                     .Bind(hostContext.Configuration.GetSection(SystemOptions.Key));
+                service.AddOptions<TimerModesOptions>()
+                    .Bind(hostContext.Configuration.GetSection(TimerModesOptions.Key));
             }).Build();
     }
 

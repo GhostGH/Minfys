@@ -4,16 +4,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:windows="clr-namespace:Minfys.ViewModels.Windows"
+        xmlns:local="clr-namespace:Minfys.Models"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=windows:OptionsDialogViewModel, IsDesignTimeCreatable=True}"
-        Title="Settings" Height="500" Width="350"
+        Title="Settings" Height="450" Width="300"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource MaterialDesignWindow}">
     <StackPanel Margin="10"
                 HorizontalAlignment="Center">
         <!-- <Label FontSize="25">Settings</Label> -->
+        <ComboBox ItemsSource="{Binding Source={x:Static local:TimerModesOptions.AvailableModes}}"
+                  SelectedItem="{Binding TimerMode}">
+        </ComboBox>
         <CheckBox Content="Loop song" FontSize="15"
-                  IsChecked="{Binding LoopEnabled}"
-                  Command="{Binding LoopOptionChangedCommand}" />
+                  Margin="5"
+                  IsChecked="{Binding LoopEnabled}" />
+        <Slider Name="VolumeSlider"
+                Minimum="0"
+                Maximum="100"
+                TickFrequency="1"
+                SmallChange="1"
+                LargeChange="10"
+                Value="{Binding AudioVolumePercent, Mode=TwoWay}">
+        </Slider>
+        <TextBlock Text="{Binding AudioVolumePercent, StringFormat={}{0:F0}%}" />
+        <StackPanel Orientation="Horizontal">
+            <Button Name="SaveButton" Content="Save"
+                    Margin="5"
+                    FontSize="15"
+                    Command="{Binding SaveSettingsCommand}" />
+            <Button Name="CloseButton" Content="Close"
+                    Margin="5"
+                    FontSize="15"
+                    Command="{Binding CloseWindowCommand}" />
+        </StackPanel>
+
     </StackPanel>
 </Window>
