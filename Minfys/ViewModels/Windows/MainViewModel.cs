@@ -61,9 +61,18 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void ChangeInterval()
     {
-        var result = _dialogService.ShowDialog<ChangeTimerIntervalDialogViewModel, TimeSpan>();
+        var result = _dialogService.ShowDialog<ChangeTimerIntervalDialogViewModel, TimeSpan?>();
         _logger.LogInformation("Result received: {Result}", result);
-        CurrentInterval = result.Result;
+
+        if (result.Result == null)
+        {
+            return;
+        }
+        else
+        {
+            CurrentInterval = (TimeSpan)result.Result;
+        }
+
         _timeRemaining = CurrentInterval;
         DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
     }

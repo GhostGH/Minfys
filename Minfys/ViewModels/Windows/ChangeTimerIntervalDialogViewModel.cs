@@ -5,7 +5,7 @@ using Minfys.Services;
 
 namespace Minfys.ViewModels.Windows;
 
-public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IRequestCloseViewModel<TimeSpan>
+public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IRequestCloseViewModel<TimeSpan?>
 {
     private readonly ILogger<ChangeTimerIntervalDialogViewModel> _logger;
     private readonly IMessageService _messageService;
@@ -26,7 +26,7 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
         if (TimeSpan.TryParse(textValue, out var ts))
         {
             _logger.LogInformation("Interval change successful with a value {NewInterval}", textValue);
-            RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan>(true, ts));
+            RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(true, ts));
         }
         else
         {
@@ -39,8 +39,8 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
     private void CancelChange()
     {
         _logger.LogInformation("Interval change was cancelled by the user");
-        RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan>(false));
+        RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(false, null));
     }
 
-    public event EventHandler<RequestCloseDialogEventArgs<TimeSpan>>? RequestClose;
+    public event EventHandler<RequestCloseDialogEventArgs<TimeSpan?>>? RequestClose;
 }
