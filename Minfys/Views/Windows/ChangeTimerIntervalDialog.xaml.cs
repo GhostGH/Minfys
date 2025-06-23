@@ -13,6 +13,7 @@ public partial class ChangeTimerIntervalDialog : Window
     {
         _logger = logger;
         DataContext = changeTimerIntervalDialogViewModel;
+
         InitializeComponent();
         _logger.LogInformation("ChangeTimerIntervalDialog created");
     }
