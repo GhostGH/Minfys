@@ -51,10 +51,12 @@ public partial class App : Application
                 service.AddSingleton<MainWindow>();
                 service.AddTransient<ChangeTimerIntervalDialog>();
                 service.AddTransient<OptionsDialog>();
+                service.AddTransient<TimerFiredDialog>();
 
                 service.AddTransient<MainViewModel>();
                 service.AddTransient<ChangeTimerIntervalDialogViewModel>();
                 service.AddTransient<OptionsDialogViewModel>();
+                service.AddTransient<TimerFiredDialogViewModel>();
 
 
                 service.AddSingleton<IMessageService, MessageService>();
