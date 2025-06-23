@@ -10,7 +10,7 @@
         Title="MainWindow" Height="550" Width="400"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -85,7 +85,7 @@
             Content="Change the interval"
             Grid.Column="1"
             Grid.Row="6"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
             FontSize="20"
             Command="{Binding ChangeIntervalCommand}" />
     </Grid>

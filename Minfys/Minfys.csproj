@@ -15,7 +15,6 @@
       <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
       <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135"/>
         <PackageReference Include="MvvmDialogs" Version="9.1.2"/>
         <PackageReference Include="NAudio" Version="2.2.1"/>
       <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
@@ -43,6 +42,7 @@
 
     <ItemGroup>
         <Folder Include="Assets\Audio\"/>
+        <Folder Include="Views\Pages\"/>
         <Folder Include="Views\UserControls\"/>
     </ItemGroup>
 

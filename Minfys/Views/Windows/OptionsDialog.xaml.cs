@@ -8,11 +8,10 @@ public partial class OptionsDialog : Window
 {
     private readonly ILogger<OptionsDialog> _logger;
 
-    public OptionsDialog(ILogger<OptionsDialog> logger, OptionsDialogViewModel optionsDialogViewModel)
+    public OptionsDialog(ILogger<OptionsDialog> logger, OptionsDialogViewModel vm)
     {
         _logger = logger;
-        DataContext = optionsDialogViewModel;
-
+        DataContext = vm;
         InitializeComponent();
         _logger.LogInformation("{Window} created", nameof(OptionsDialog));
     }

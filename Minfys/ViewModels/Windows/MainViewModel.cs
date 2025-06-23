@@ -12,18 +12,16 @@ namespace Minfys.ViewModels.Windows;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly ILogger<MainViewModel> _logger;
+    private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
     private readonly DispatcherTimer _timer;
     private readonly AudioOptions _audioOptions;
-    private readonly TimerModesOptions _timerModesOptions;
-
-    private WaveOut? _waveOut;
-    private LoopStream? _loopStream;
-    private AudioFileReader? _audioFileReader;
-    private TimerModesOptions.TimerModesEnum _timerMode;
     private string _filePath;
     private bool _loopEnabled;
     private float _audioVolume;
+    private WaveOut? _waveOut;
+    private LoopStream? _loopStream;
+    private AudioFileReader? _audioFileReader;
 
     private DateTime _endTime;
 
@@ -38,16 +36,15 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel(ILogger<MainViewModel> logger,
         IMessageService messageService, IDialogService dialogService,
-        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModesOptions)
+        IOptionsMonitor<AudioOptions> audioOptions)
     {
         _logger = logger;
+        _messageService = messageService;
         _dialogService = dialogService;
         _audioOptions = audioOptions.CurrentValue;
-        _timerModesOptions = timerModesOptions.CurrentValue;
         _filePath = _audioOptions.FilePath;
         _loopEnabled = _audioOptions.LoopEnabled;
         _audioVolume = _audioOptions.Volume;
-        _timerMode = _timerModesOptions.TimerMode;
 
         _timer = new DispatcherTimer
         {
@@ -58,8 +55,6 @@ public partial class MainViewModel : ViewModelBase
 
         _timer.Tick += TimerOnTick;
         audioOptions.OnChange(AudioOptionsUpdated);
-        timerModesOptions.OnChange(TimerModesOptionsUpdated);
-
         _logger.LogInformation("{ViewModel} created", nameof(MainViewModel));
     }
 
@@ -137,43 +132,16 @@ public partial class MainViewModel : ViewModelBase
         _audioFileReader = null;
     }
 
-    private void TimerFire()
-    {
-        _timeRemaining = TimeSpan.Zero;
-        PlaySound(_loopEnabled);
-        _timer.Stop();
-        _logger.LogInformation("Timer fired");
-        _timeRemaining = CurrentInterval;
-
-        if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
-        {
-            DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
-            return;
-        }
-        else
-        {
-            var result = _dialogService.ShowDialog<TimerFiredDialogViewModel, bool>();
-
-            if (result.Result == false)
-            {
-                StopSound();
-                DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
-            }
-            else
-            {
-                StopSound();
-                DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
-                StartTimer();
-            }
-        }
-    }
-
     private void TimerOnTick(object? sender, EventArgs e)
     {
         _timeRemaining = _endTime - DateTime.Now;
         if (_timeRemaining < TimeSpan.Zero)
         {
-            TimerFire();
+            _timeRemaining = TimeSpan.Zero;
+            PlaySound(_loopEnabled);
+            _timer.Stop();
+            _logger.LogInformation("Timer fired");
+            _timeRemaining = CurrentInterval;
         }
 
         DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
@@ -183,10 +151,5 @@ public partial class MainViewModel : ViewModelBase
     {
         _loopEnabled = arg1.LoopEnabled;
         _audioVolume = arg1.Volume;
-    }
-
-    private void TimerModesOptionsUpdated(TimerModesOptions arg1, string? arg2)
-    {
-        _timerMode = arg1.TimerMode;
     }
 }

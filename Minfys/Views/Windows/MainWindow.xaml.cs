@@ -15,7 +15,6 @@ public partial class MainWindow : Window
     {
         _logger = logger;
         DataContext = mainViewModel;
-
         InitializeComponent();
         _logger.LogInformation("{Window} created", nameof(MainWindow));
     }

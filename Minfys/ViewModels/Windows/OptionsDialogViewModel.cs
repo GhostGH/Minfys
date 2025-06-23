@@ -16,7 +16,6 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
 
     [ObservableProperty] private string? _songPath;
     [ObservableProperty] private bool _loopEnabled;
-    [ObservableProperty] private bool _isLoopOptionAvailable;
     [ObservableProperty] private float _audioVolume;
 
     public float AudioVolumePercent
@@ -44,40 +43,16 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _audioVolume = _audioOptions.Volume;
 
         _timerMode = _timerModesOptions.TimerMode;
-        // lol
-        _isLoopOptionAvailable = (TimerMode != TimerModesOptions.TimerModesEnum.Single);
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
 
     [RelayCommand]
-    private void TimerModeOptionChanged()
-    {
-        if (TimerMode == TimerModesOptions.TimerModesEnum.Single)
-        {
-            IsLoopOptionAvailable = false;
-            LoopEnabled = false;
-            _audioOptions.LoopEnabled = LoopEnabled;
-        }
-        else
-        {
-            IsLoopOptionAvailable = true;
-            _audioOptions.LoopEnabled = LoopEnabled;
-        }
-
-        _timerModesOptions.TimerMode = TimerMode;
-    }
-
-    [RelayCommand]
-    private void LoopOptionChanged()
-    {
-        _audioOptions.LoopEnabled = LoopEnabled;
-    }
-
-    [RelayCommand]
     private void SaveSettings()
     {
+        _timerModesOptions.TimerMode = TimerMode;
         _audioOptions.Volume = AudioVolume;
+        _audioOptions.LoopEnabled = LoopEnabled;
 
         _optionsService.Save(_timerModesOptions, TimerModesOptions.Key);
         _optionsService.Save(_audioOptions, AudioOptions.Key);
