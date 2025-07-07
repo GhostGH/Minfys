@@ -7,9 +7,11 @@ using Microsoft.Extensions.Hosting;
 using Minfys.Models;
 using Minfys.Services;
 using Minfys.ViewModels.Windows;
-using Minfys.Views.Windows;
 using Serilog;
+using ChangeTimerIntervalDialog = Minfys.Views.Dialogs.ChangeTimerIntervalDialog;
 using MainViewModel = Minfys.ViewModels.Windows.MainViewModel;
+using OptionsDialog = Minfys.Views.Dialogs.OptionsDialog;
+using TimerFiredDialog = Minfys.Views.Dialogs.TimerFiredDialog;
 
 namespace Minfys;
 

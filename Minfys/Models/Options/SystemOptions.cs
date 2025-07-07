@@ -3,5 +3,9 @@
 public class SystemOptions
 {
     public const string Key = "SystemOptions";
-    public bool LaunchInSystemTray { get; set; } = false;
+
+    /// <summary>
+    /// Minimize to tray when closing the window (clicking the “×” button)
+    /// </summary>
+    public bool EnableCloseToTray { get; set; } = false;
 }

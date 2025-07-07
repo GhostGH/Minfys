@@ -12,6 +12,7 @@
     <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739"/>
+        <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1"/>
       <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
       <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
@@ -34,7 +35,7 @@
         <Page Update="Views\Windows\ChangeTimerIntervalDialog.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>
-        <Page Update="Views\Windows\MainWindow.xaml">
+        <Page Update="Views\MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>
@@ -43,7 +44,6 @@
 
     <ItemGroup>
         <Folder Include="Assets\Audio\"/>
-        <Folder Include="Views\UserControls\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -51,6 +51,17 @@
         <Content Include="Assets\Audio\default_song.mp3">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Assets\Tray.png"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Assets\Tray.ico"/>
+        <Resource Include="Assets\Tray.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
     </ItemGroup>
 
 </Project>

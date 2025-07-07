@@ -1,0 +1,109 @@
+﻿<Window x:Class="Minfys.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        xmlns:windows="clr-namespace:Minfys.ViewModels.Windows"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        d:DataContext="{d:DesignInstance Type=windows:MainViewModel, IsDesignTimeCreatable=True}"
+        Title="MainWindow" Height="550" Width="400"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}">
+    <Border
+        BorderBrush="#5c5c5c"
+        BorderThickness="2">
+        <Grid ShowGridLines="True">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <tb:TaskbarIcon x:Name="TrayIcon"
+                            Visibility="Hidden"
+                            IconSource="/Assets/Tray.ico"
+                            ToolTipText="My App"
+                            PopupActivation="DoubleClick">
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open Minfys" Click="MenuOpen_OnClick" />
+                        <MenuItem Header="Exit" Click="MenuExit_OnClick" />
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
+            <Button
+                Name="SettingsButton"
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="Auto"
+                Command="{Binding OpenOptionsCommand}">
+                <materialDesign:PackIcon Kind="Settings" />
+            </Button>
+            <Border
+                Grid.Column="1"
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                BorderBrush="Aqua"
+                BorderThickness="2"
+                Margin="15">
+                <TextBlock
+                    Name="TimerCountdownTextBlock"
+                    FontSize="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBlock Text="{Binding DisplayTime}" />
+                </TextBlock>
+            </Border>
+            <TextBlock
+                Name="CurrentTimerIntervalTextBlock"
+                Grid.Column="1"
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding CurrentInterval}">
+            </TextBlock>
+            <Button
+                Name="StartTimerButton"
+                Content="Start"
+                Grid.Column="1"
+                Grid.Row="4"
+                Grid.ColumnSpan="3"
+                FontSize="20"
+                Command="{Binding StartTimerCommand}" />
+            <Button
+                Name="StopTimerButton"
+                Content="Stop"
+                Grid.Column="1"
+                Grid.Row="5"
+                Grid.ColumnSpan="3"
+                FontSize="20"
+                Command="{Binding StopTimerCommand}" />
+            <Button
+                Name="ChangeTimerIntervalButton"
+                Content="Change the interval"
+                Grid.Column="1"
+                Grid.Row="6"
+                Grid.ColumnSpan="3"
+                FontSize="20"
+                Command="{Binding ChangeIntervalCommand}" />
+        </Grid>
+    </Border>
+</Window>

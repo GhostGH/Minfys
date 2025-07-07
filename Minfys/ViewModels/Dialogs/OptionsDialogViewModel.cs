@@ -13,11 +13,13 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     private readonly IOptionsService _optionsService;
     private readonly AudioOptions _audioOptions;
     private readonly TimerModesOptions _timerModesOptions;
+    private readonly SystemOptions _systemOptions;
 
     [ObservableProperty] private string? _songPath;
     [ObservableProperty] private bool _loopEnabled;
     [ObservableProperty] private bool _isLoopOptionAvailable;
     [ObservableProperty] private float _audioVolume;
+    [ObservableProperty] private bool _trayEnabled;
 
     public float AudioVolumePercent
     {
@@ -32,16 +34,19 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [ObservableProperty] private TimerModesOptions.TimerModesEnum _timerMode;
 
     public OptionsDialogViewModel(ILogger<OptionsDialogViewModel> logger, IOptionsService optionsService,
-        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModsOptions)
+        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModsOptions,
+        IOptionsMonitor<SystemOptions> systemOptions)
     {
         _logger = logger;
         _optionsService = optionsService;
         _audioOptions = audioOptions.CurrentValue;
         _timerModesOptions = timerModsOptions.CurrentValue;
+        _systemOptions = systemOptions.CurrentValue;
 
         _songPath = _audioOptions.FilePath;
         _loopEnabled = _audioOptions.LoopEnabled;
         _audioVolume = _audioOptions.Volume;
+        _trayEnabled = _systemOptions.EnableCloseToTray;
 
         _timerMode = _timerModesOptions.TimerMode;
         // lol
@@ -75,12 +80,20 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     }
 
     [RelayCommand]
+    private void TrayOptionChanged()
+    {
+        _systemOptions.EnableCloseToTray = TrayEnabled;
+    }
+
+    [RelayCommand]
     private void SaveSettings()
     {
+        // It's here because Slider and NAudio use different variables, so no binding for this one
         _audioOptions.Volume = AudioVolume;
 
         _optionsService.Save(_timerModesOptions, TimerModesOptions.Key);
         _optionsService.Save(_audioOptions, AudioOptions.Key);
+        _optionsService.Save(_systemOptions, SystemOptions.Key);
 
         CloseWindow();
     }

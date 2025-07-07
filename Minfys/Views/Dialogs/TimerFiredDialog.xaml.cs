@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Minfys.ViewModels.Windows;
 
-namespace Minfys.Views.Windows;
+namespace Minfys.Views.Dialogs;
 
 public partial class TimerFiredDialog : Window
 {
