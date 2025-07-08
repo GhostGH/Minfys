@@ -50,7 +50,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
 
         _timerMode = _timerModesOptions.TimerMode;
         // lol
-        _isLoopOptionAvailable = (TimerMode != TimerModesOptions.TimerModesEnum.Single);
+        _isLoopOptionAvailable = (TimerMode != TimerModesOptions.TimerModesEnum.Looping);
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
@@ -58,7 +58,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void TimerModeOptionChanged()
     {
-        if (TimerMode == TimerModesOptions.TimerModesEnum.Single)
+        if (TimerMode == TimerModesOptions.TimerModesEnum.Looping)
         {
             IsLoopOptionAvailable = false;
             LoopEnabled = false;

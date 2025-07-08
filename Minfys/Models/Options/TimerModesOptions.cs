@@ -6,10 +6,10 @@ public class TimerModesOptions
 
     public enum TimerModesEnum
     {
-        Single,
-        Persistent
+        Looping,
+        Single
     }
 
     public static Array AvailableModes => Enum.GetValues(typeof(TimerModesEnum));
-    public TimerModesEnum TimerMode { get; set; } = TimerModesEnum.Single;
+    public TimerModesEnum TimerMode { get; set; } = TimerModesEnum.Looping;
 }

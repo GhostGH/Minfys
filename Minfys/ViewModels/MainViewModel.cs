@@ -145,12 +145,14 @@ public partial class MainViewModel : ViewModelBase
         _logger.LogInformation("Timer fired");
         _timeRemaining = CurrentInterval;
 
-        if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
+        if (_timerMode == TimerModesOptions.TimerModesEnum.Looping)
         {
             DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
+            StartTimer();
+
             return;
         }
-        else
+        else if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
         {
             var result = _dialogService.ShowDialog<TimerFiredDialogViewModel, bool>();
 
