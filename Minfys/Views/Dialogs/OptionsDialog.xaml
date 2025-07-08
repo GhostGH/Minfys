@@ -31,6 +31,14 @@
         <Style x:Key="LastSettingBorderStyle" TargetType="Border" BasedOn="{StaticResource SettingBorderStyle}">
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
+        <Style x:Key="IconStyle" TargetType="materialDesign:PackIcon">
+            <Setter Property="Width" Value="18"></Setter>
+            <Setter Property="Height" Value="18"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Foreground" Value="MediumPurple"></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
     </Window.Resources>
     <Border
         BorderBrush="#5c5c5c"
@@ -51,7 +59,7 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Application mode" Style="{StaticResource SettingsTextBlockStyle}"></TextBlock>
+                    <TextBlock Grid.Column="0" Text="Timer mode" Style="{StaticResource SettingsTextBlockStyle}"></TextBlock>
                     <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                               ItemsSource="{Binding Source={x:Static local:TimerModesOptions.AvailableModes}}"
                               SelectedItem="{Binding TimerMode}">
@@ -75,15 +83,21 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               Text="Enable loop" Style="{StaticResource SettingsTextBlockStyle}">
+                               Text="Enable song loop" Style="{StaticResource SettingsTextBlockStyle}">
                     </TextBlock>
-                    <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center"
+                    <materialDesign:PackIcon Grid.Column="1" Style="{StaticResource IconStyle}"
+                                             VerticalAlignment="Center"
                                              Kind="InformationOutline"
-                                             Width="18" Height="18"
-                                             Margin="5"
-                                             Foreground="MediumPurple"
-                                             Background="Transparent"
-                                             ToolTip="Loop cannot be enabled while Single mode is enabled." />
+                                             ToolTip="Loop cannot be enabled while Looping mode is enabled.">
+                        <ToolTipService.ToolTip>
+                            <TextBlock TextWrapping="Wrap" Style="{StaticResource SettingsTextBlockStyle}">
+                                <Run Text="Loop cannot be enabled while" />
+                                <Run Text="Looping" FontWeight="Bold" Foreground="MediumPurple" />
+                                <Run Text="timer mode" FontWeight="Bold" />
+                                <Run Text="is enabled." />
+                            </TextBlock>
+                        </ToolTipService.ToolTip>
+                    </materialDesign:PackIcon>
                     <CheckBox Grid.Column="2"
                               VerticalAlignment="Center"
                               HorizontalAlignment="Right"
