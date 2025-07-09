@@ -19,7 +19,7 @@
     <Window.Resources>
         <Style x:Key="SettingBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="#383838"></Setter>
-            <Setter Property="Padding" Value="10, 7, 10, 9"></Setter>
+            <Setter Property="Padding" Value="10, 7, 10, 5"></Setter>
             <!--Weird paddings because otherwise text is not exactly in the middle of grid column. It's about text rendering - cant do much-->
             <Setter Property="BorderBrush" Value="#5c5c5c"></Setter>
             <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
@@ -49,6 +49,7 @@
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
@@ -157,7 +158,24 @@
                 </Grid>
             </Border>
 
-            <StackPanel Grid.Row="4"
+            <Border Grid.Row="4" Style="{StaticResource SettingBorderStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource SettingsTextBlockStyle}"
+                               Text="Launch Minfys when I start my computer" />
+
+                    <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                              IsChecked="{Binding AutoLaunchEnabled}"
+                              Command="{Binding AutoLaunchOptionChanged}" />
+
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="5"
                         Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button
                     Name="SaveButton" Content="Save"
