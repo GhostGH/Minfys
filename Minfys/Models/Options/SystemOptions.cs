@@ -8,4 +8,10 @@ public class SystemOptions
     /// Minimize to tray when closing the window (clicking the “×” button)
     /// </summary>
     public bool EnableCloseToTray { get; set; } = false;
+
+    /// <summary>
+    /// Make Minfys launch when computer starts
+    /// </summary>
+
+    public bool EnableAutoLaunch { get; set; } = false;
 }
