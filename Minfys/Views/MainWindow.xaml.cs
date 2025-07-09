@@ -2,9 +2,9 @@
 using System.Windows;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Minfys.Models;
+using Minfys.Models.Options;
 using Application = System.Windows.Application;
-using MainViewModel = Minfys.ViewModels.Windows.MainViewModel;
+using MainViewModel = Minfys.ViewModels.MainViewModel;
 
 namespace Minfys;
 
@@ -15,7 +15,6 @@ public partial class MainWindow : Window
 {
     private readonly ILogger<MainWindow> _logger;
     private readonly IOptionsMonitor<SystemOptions> _systemOptions;
-    private bool isRealClose = false;
 
     public MainWindow(ILogger<MainWindow> logger, IOptionsMonitor<SystemOptions> systemOptions,
         MainViewModel mainViewModel)
@@ -55,5 +54,12 @@ public partial class MainWindow : Window
     {
         TrayIcon.Visibility = Visibility.Hidden;
         Application.Current.Shutdown();
+    }
+
+    private void TrayIcon_OnTrayMouseDoubleClick(object sender, RoutedEventArgs e)
+    {
+        Show();
+        ShowInTaskbar = true;
+        TrayIcon.Visibility = Visibility.Hidden;
     }
 }

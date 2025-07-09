@@ -1,4 +1,6 @@
-﻿namespace Minfys.Services;
+﻿using Minfys.ViewModels.Dialogs;
+
+namespace Minfys.Services;
 
 public interface IDialogService
 {

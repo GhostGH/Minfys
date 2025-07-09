@@ -1,4 +1,4 @@
-﻿namespace Minfys.Models;
+﻿namespace Minfys.Models.Options;
 
 public class TimerModesOptions
 {

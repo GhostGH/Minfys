@@ -4,14 +4,16 @@ using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Minfys.Models;
+using Minfys.Models.Options;
 using Minfys.Services;
-using Minfys.ViewModels.Windows;
 using Serilog;
 using ChangeTimerIntervalDialog = Minfys.Views.Dialogs.ChangeTimerIntervalDialog;
-using MainViewModel = Minfys.ViewModels.Windows.MainViewModel;
+using ChangeTimerIntervalDialogViewModel = Minfys.ViewModels.Dialogs.ChangeTimerIntervalDialogViewModel;
+using MainViewModel = Minfys.ViewModels.MainViewModel;
 using OptionsDialog = Minfys.Views.Dialogs.OptionsDialog;
+using OptionsDialogViewModel = Minfys.ViewModels.Dialogs.OptionsDialogViewModel;
 using TimerFiredDialog = Minfys.Views.Dialogs.TimerFiredDialog;
+using TimerFiredDialogViewModel = Minfys.ViewModels.Dialogs.TimerFiredDialogViewModel;
 
 namespace Minfys;
 

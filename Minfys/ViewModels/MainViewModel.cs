@@ -3,11 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Minfys.Models;
+using Minfys.Models.NAudio;
+using Minfys.Models.Options;
 using Minfys.Services;
+using Minfys.ViewModels.Dialogs;
 using NAudio.Wave;
 
-namespace Minfys.ViewModels.Windows;
+namespace Minfys.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
@@ -149,8 +151,6 @@ public partial class MainViewModel : ViewModelBase
         {
             DisplayTime = _timeRemaining.ToString(@"hh\:mm\:ss");
             StartTimer();
-
-            return;
         }
         else if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
         {

@@ -1,6 +1,4 @@
-﻿using Minfys.ViewModels.Windows;
-
-namespace Minfys.Services;
+﻿namespace Minfys.ViewModels.Dialogs;
 
 public interface IRequestCloseViewModel<TResult>
 {

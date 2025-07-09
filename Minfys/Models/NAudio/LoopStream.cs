@@ -1,6 +1,6 @@
 ﻿using NAudio.Wave;
 
-namespace Minfys.Models;
+namespace Minfys.Models.NAudio;
 
 public class LoopStream : WaveStream
 {

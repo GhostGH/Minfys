@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.Logging;
-using Minfys.ViewModels.Windows;
+using TimerFiredDialogViewModel = Minfys.ViewModels.Dialogs.TimerFiredDialogViewModel;
 
 namespace Minfys.Views.Dialogs;
 

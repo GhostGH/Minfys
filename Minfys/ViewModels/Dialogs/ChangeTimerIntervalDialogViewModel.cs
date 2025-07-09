@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Minfys.Services;
 
-namespace Minfys.ViewModels.Windows;
+namespace Minfys.ViewModels.Dialogs;
 
 public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IRequestCloseViewModel<TimeSpan?>
 {

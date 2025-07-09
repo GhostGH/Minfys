@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:windows="clr-namespace:Minfys.ViewModels.Windows"
-        xmlns:local="clr-namespace:Minfys.Models"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dialogs="clr-namespace:Minfys.ViewModels.Dialogs"
+        xmlns:options="clr-namespace:Minfys.Models.Options"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=windows:OptionsDialogViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=dialogs:OptionsDialogViewModel, IsDesignTimeCreatable=True}"
         Title="Settings" Height="450" Width="300"
         WindowStyle="None"
         ResizeMode="NoResize"
@@ -62,7 +62,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Timer mode" Style="{StaticResource SettingsTextBlockStyle}"></TextBlock>
                     <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                              ItemsSource="{Binding Source={x:Static local:TimerModesOptions.AvailableModes}}"
+                              ItemsSource="{Binding Source={x:Static options:TimerModesOptions.AvailableModes}}"
                               SelectedItem="{Binding TimerMode}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">

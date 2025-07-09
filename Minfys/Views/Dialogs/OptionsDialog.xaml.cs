@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.Logging;
-using Minfys.ViewModels.Windows;
+using OptionsDialogViewModel = Minfys.ViewModels.Dialogs.OptionsDialogViewModel;
 
 namespace Minfys.Views.Dialogs;
 

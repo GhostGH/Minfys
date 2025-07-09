@@ -1,4 +1,4 @@
-﻿namespace Minfys.Models;
+﻿namespace Minfys.Models.Options;
 
 /// <summary>
 /// Contains timer song settings

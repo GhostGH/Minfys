@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Minfys.Models;
+using Minfys.Models.Options;
 using Minfys.Services;
 
-namespace Minfys.ViewModels.Windows;
+namespace Minfys.ViewModels.Dialogs;
 
 public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewModel<object>
 {

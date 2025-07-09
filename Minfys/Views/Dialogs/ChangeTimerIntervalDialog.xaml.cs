@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.Logging;
-using Minfys.ViewModels.Windows;
+using ChangeTimerIntervalDialogViewModel = Minfys.ViewModels.Dialogs.ChangeTimerIntervalDialogViewModel;
 
 namespace Minfys.Views.Dialogs;
 

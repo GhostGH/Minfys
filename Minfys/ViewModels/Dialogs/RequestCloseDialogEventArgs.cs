@@ -1,4 +1,4 @@
-﻿namespace Minfys.ViewModels.Windows;
+﻿namespace Minfys.ViewModels.Dialogs;
 
 public class RequestCloseDialogEventArgs<TResult> : EventArgs
 {
