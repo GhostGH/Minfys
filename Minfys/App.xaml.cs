@@ -67,6 +67,7 @@ public partial class App : Application
                 service.AddSingleton<IDialogService, DialogService>();
                 service.AddSingleton(provider => _userConfigPath);
                 service.AddSingleton<IOptionsService, OptionsService>();
+                service.AddSingleton<AutoLaunchService>();
 
                 service.AddOptions<AudioOptions>()
                     .Bind(hostContext.Configuration.GetSection(AudioOptions.Key));

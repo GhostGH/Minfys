@@ -10,6 +10,7 @@ namespace Minfys.ViewModels.Dialogs;
 public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewModel<object>
 {
     private readonly ILogger<OptionsDialogViewModel> _logger;
+    private readonly AutoLaunchService _autoLaunchService;
     private readonly IOptionsService _optionsService;
     private readonly AudioOptions _audioOptions;
     private readonly TimerModesOptions _timerModesOptions;
@@ -20,6 +21,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [ObservableProperty] private bool _isLoopOptionAvailable;
     [ObservableProperty] private float _audioVolume;
     [ObservableProperty] private bool _trayEnabled;
+    [ObservableProperty] private bool _autoLaunchEnabled;
 
     public float AudioVolumePercent
     {
@@ -33,11 +35,12 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
 
     [ObservableProperty] private TimerModesOptions.TimerModesEnum _timerMode;
 
-    public OptionsDialogViewModel(ILogger<OptionsDialogViewModel> logger, IOptionsService optionsService,
-        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModsOptions,
-        IOptionsMonitor<SystemOptions> systemOptions)
+    public OptionsDialogViewModel(ILogger<OptionsDialogViewModel> logger, AutoLaunchService autoLaunchService,
+        IOptionsService optionsService, IOptionsMonitor<AudioOptions> audioOptions,
+        IOptionsMonitor<TimerModesOptions> timerModsOptions, IOptionsMonitor<SystemOptions> systemOptions)
     {
         _logger = logger;
+        _autoLaunchService = autoLaunchService;
         _optionsService = optionsService;
         _audioOptions = audioOptions.CurrentValue;
         _timerModesOptions = timerModsOptions.CurrentValue;
@@ -47,6 +50,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _loopEnabled = _audioOptions.LoopEnabled;
         _audioVolume = _audioOptions.Volume;
         _trayEnabled = _systemOptions.EnableCloseToTray;
+        _autoLaunchEnabled = _systemOptions.EnableAutoLaunch;
 
         _timerMode = _timerModesOptions.TimerMode;
         // lol
@@ -86,10 +90,18 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     }
 
     [RelayCommand]
+    private void AutoLaunchOptionChanged()
+    {
+        _systemOptions.EnableAutoLaunch = AutoLaunchEnabled;
+    }
+
+    [RelayCommand]
     private void SaveSettings()
     {
-        // It's here because Slider and NAudio use different variables, so no binding for this one
+        // It's here because Slider and NAudio use different variables, so no binding property for this one
         _audioOptions.Volume = AudioVolume;
+
+        _autoLaunchService.SetAutoLaunch(AutoLaunchEnabled);
 
         _optionsService.Save(_timerModesOptions, TimerModesOptions.Key);
         _optionsService.Save(_audioOptions, AudioOptions.Key);
