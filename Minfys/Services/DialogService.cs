@@ -5,6 +5,9 @@ using Minfys.ViewModels.Dialogs;
 
 namespace Minfys.Services;
 
+/// <summary>
+/// Manages opening and closing windows
+/// </summary>
 public class DialogService : IDialogService
 {
     private readonly IServiceProvider _services;
