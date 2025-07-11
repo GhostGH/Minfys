@@ -3,22 +3,30 @@ using Microsoft.Win32;
 
 namespace Minfys.Services;
 
+/// <summary>
+/// Manges application's auto launch functionality.
+/// </summary>
 public class AutoLaunchService
 {
-    private readonly string _appName = "Minfys";
-    private readonly string _registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+    private const string AppName = "Minfys";
+    private const string RegistryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
+    /// <summary>
+    /// Enable or disables application auto launch. 
+    /// </summary>
+    /// <param name="enabled">Whether to enable or disable auto launch.</param>
+    /// <exception cref="SecurityException">The user does not have the permissions required to create or modify registry keys.</exception>
     public void SetAutoLaunch(bool enabled)
     {
-        using var key = Registry.CurrentUser.OpenSubKey(_registryPath, true);
+        using var key = Registry.CurrentUser.OpenSubKey(RegistryPath, true);
 
         if (enabled)
         {
-            key?.SetValue(_appName, Application.ExecutablePath);
+            key?.SetValue(AppName, Application.ExecutablePath);
         }
         else
         {
-            key?.DeleteValue(_appName, false);
+            key?.DeleteValue(AppName, false);
         }
     }
 }
