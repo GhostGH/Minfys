@@ -1,5 +1,8 @@
 ﻿namespace Minfys.Models.Options;
 
+/// <summary>
+/// Contains system-level settings related to application behavior and startup.
+/// </summary>
 public class SystemOptions
 {
     public const string Key = "SystemOptions";
