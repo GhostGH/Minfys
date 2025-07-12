@@ -1,7 +1,7 @@
 ﻿namespace Minfys.Services;
 
 /// <summary>
-/// Provide a contract for showing message and error pop-ups to the user.
+/// Provides a contract for showing message and error pop-ups to the user.
 /// </summary>
 public interface IMessageService
 {

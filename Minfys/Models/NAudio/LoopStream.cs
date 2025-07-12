@@ -4,35 +4,29 @@ namespace Minfys.Models.NAudio;
 
 public class LoopStream : WaveStream
 {
-    private readonly WaveStream sourceStream;
+    private readonly WaveStream _sourceStream;
     public bool EnableLooping { get; set; }
 
     public LoopStream(WaveStream sourceStream)
     {
-        this.sourceStream = sourceStream;
+        this._sourceStream = sourceStream;
         this.EnableLooping = true;
     }
 
-    /// <summary>
-    /// Return source stream's wave format
-    /// </summary>
     public override WaveFormat WaveFormat
     {
-        get { return sourceStream.WaveFormat; }
+        get { return _sourceStream.WaveFormat; }
     }
 
-    /// <summary>
-    /// LoopStream simply returns
-    /// </summary>
     public override long Length
     {
-        get { return sourceStream.Length; }
+        get { return _sourceStream.Length; }
     }
 
     public override long Position
     {
-        get => sourceStream.Position;
-        set => sourceStream.Position = value;
+        get => _sourceStream.Position;
+        set => _sourceStream.Position = value;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
@@ -40,16 +34,15 @@ public class LoopStream : WaveStream
         int totalBytesRead = 0;
         while (totalBytesRead < count)
         {
-            int bytesRead = sourceStream.Read(buffer, offset + totalBytesRead, count - totalBytesRead);
+            int bytesRead = _sourceStream.Read(buffer, offset + totalBytesRead, count - totalBytesRead);
             if (bytesRead == 0)
             {
-                if (!EnableLooping || sourceStream.Position == 0)
+                if (!EnableLooping || _sourceStream.Position == 0)
                 {
                     break;
                 }
 
-                sourceStream.Position = 0;
-                //continue;
+                _sourceStream.Position = 0;
             }
 
             totalBytesRead += bytesRead;

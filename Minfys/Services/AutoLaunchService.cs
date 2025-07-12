@@ -4,7 +4,7 @@ using Microsoft.Win32;
 namespace Minfys.Services;
 
 /// <summary>
-/// Manges application's auto launch functionality.
+/// Manages application's auto launch functionality.
 /// </summary>
 public class AutoLaunchService
 {
@@ -12,7 +12,7 @@ public class AutoLaunchService
     private const string RegistryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
     /// <summary>
-    /// Enable or disables application auto launch. 
+    /// Enables or disables application auto launch. 
     /// </summary>
     /// <param name="enabled">Whether to enable or disable auto launch.</param>
     /// <exception cref="SecurityException">The user does not have the permissions required to create or modify registry keys.</exception>

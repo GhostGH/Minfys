@@ -8,7 +8,7 @@ namespace Minfys.Services;
 public interface IDialogService
 {
     /// <summary>
-    /// Open a dialog window using its View Model type and return both the dialog result and the custom result.
+    /// Opens a dialog window using its View Model type and return both the dialog result and the custom result.
     /// </summary>
     /// <typeparam name="TViewModel">The type of dialog's View Model which must implement IRequestCloseViewModel.</typeparam>
     /// <typeparam name="TResult">Additional data that may be returned from a dialog when it closes.</typeparam>

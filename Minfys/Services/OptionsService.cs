@@ -29,12 +29,6 @@ public class OptionsService : IOptionsService
         _logger.LogInformation("{Service} created", nameof(OptionsService));
     }
 
-    /// <summary>
-    /// Loads settings.
-    /// </summary>
-    /// <param name="sectionKey">Section key from appsettings.json to load a specific settings section.</param>
-    /// <typeparam name="TOptions">Only settings classes can be used.</typeparam>
-    /// <returns></returns>
     public TOptions? Load<TOptions>(string? sectionKey = null) where TOptions : class, new()
     {
         if (!File.Exists(_filePath))

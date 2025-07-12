@@ -7,7 +7,7 @@ public interface IOptionsService
     /// Loads Options from userPreferences.json. 
     /// </summary>
     /// <param name="sectionKey">The name of the options section.</param>
-    /// <returns>Returns null if there is an error during loading. Otherwise, returns specific options type.</returns>
+    /// <returns>Returns null if there is an error during loading. Otherwise, returns specific options type object.</returns>
     TOptions? Load<TOptions>(string? sectionKey = null) where TOptions : class, new();
 
     /// <summary>
