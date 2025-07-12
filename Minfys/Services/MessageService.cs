@@ -2,6 +2,9 @@
 
 namespace Minfys.Services;
 
+/// <summary>
+/// Manages error and message pop-ups.
+/// </summary>
 public class MessageService : IMessageService
 {
     public void ShowError(string message)
