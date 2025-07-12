@@ -1,5 +1,6 @@
 ﻿namespace Minfys.Services;
 
+// Provides a contract for saving and loading settings.
 public interface IOptionsService
 {
     /// <summary>

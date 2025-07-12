@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Minfys.Services;
 
+/// <summary>
+/// Manages loading and saving application settings.
+/// </summary>
 public class OptionsService : IOptionsService
 {
     private readonly ILogger<OptionsService> _logger;
@@ -26,6 +29,12 @@ public class OptionsService : IOptionsService
         _logger.LogInformation("{Service} created", nameof(OptionsService));
     }
 
+    /// <summary>
+    /// Loads settings.
+    /// </summary>
+    /// <param name="sectionKey">Section key from appsettings.json to load a specific settings section.</param>
+    /// <typeparam name="TOptions">Only settings classes can be used.</typeparam>
+    /// <returns></returns>
     public TOptions? Load<TOptions>(string? sectionKey = null) where TOptions : class, new()
     {
         if (!File.Exists(_filePath))
@@ -38,15 +47,13 @@ public class OptionsService : IOptionsService
             var json = File.ReadAllText(_filePath);
             var rootElement = JsonDocument.Parse(json).RootElement;
 
-            // Если указан ключ секции, пытаемся найти её
             if (!string.IsNullOrEmpty(sectionKey) && rootElement.TryGetProperty(sectionKey, out var section))
             {
-                // Десериализуем только указанную секцию
                 return JsonSerializer.Deserialize<TOptions>(section.GetRawText(), _serializerOptions);
             }
             else
             {
-                // Если секция не указана или не найдена, десериализуем весь документ
+                // If there is no section key or section wasn't found, get full section
                 return JsonSerializer.Deserialize<TOptions>(json, _serializerOptions);
             }
         }
@@ -98,7 +105,7 @@ public class OptionsService : IOptionsService
     {
         try
         {
-            // Если секция не указана, просто сохраняем весь объект
+            // If there is no section key specified, save the whole object.
             if (string.IsNullOrEmpty(sectionKey))
             {
                 var json = JsonSerializer.Serialize(options, _serializerOptions);
@@ -106,11 +113,10 @@ public class OptionsService : IOptionsService
                 return;
             }
 
-            // Если секция указана, мы должны сохранить её в существующий файл
+            // If section is specified, save it to the existing file.
             JsonDocument? document = null;
             Dictionary<string, JsonElement> rootDict = new();
 
-            // Пытаемся прочитать существующий файл
             if (File.Exists(_filePath))
             {
                 var existingJson = File.ReadAllText(_filePath);
@@ -118,7 +124,6 @@ public class OptionsService : IOptionsService
                 {
                     document = JsonDocument.Parse(existingJson);
 
-                    // Копируем все существующие секции в словарь
                     foreach (var property in document.RootElement.EnumerateObject())
                     {
                         rootDict[property.Name] = property.Value.Clone();
@@ -126,14 +131,11 @@ public class OptionsService : IOptionsService
                 }
             }
 
-            // Сериализуем наш объект
             var optionsJson = JsonSerializer.Serialize(options, _serializerOptions);
             var optionsElement = JsonDocument.Parse(optionsJson).RootElement;
 
-            // Заменяем или добавляем нашу секцию
             rootDict[sectionKey] = optionsElement;
 
-            // Собираем финальный JSON
             using var stream = new MemoryStream();
             using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
             writer.WriteStartObject();
@@ -150,7 +152,6 @@ public class OptionsService : IOptionsService
             var finalJson = Encoding.UTF8.GetString(stream.ToArray());
             File.WriteAllText(_filePath, finalJson);
 
-            // Освобождаем ресурсы
             document?.Dispose();
         }
         catch (ArgumentException ex)
