@@ -31,12 +31,15 @@ public class DialogService : IDialogService
         if (windowType == null)
             throw new InvalidOperationException($"Window not found for {typeof(TViewModel).Name}");
 
-        var window = (Window)_services.GetRequiredService(windowType); // uses XAML-defined type
-        window.Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+        var window = (Window)_services.GetRequiredService(windowType);
+        window.Owner = Application.Current.MainWindow;
         window.DataContext = viewModel;
 
-        Window ownerWindow = window.Owner!;
-        ownerWindow.Opacity = 0.7;
+        if (Application.Current?.MainWindow != null)
+        {
+            window.Owner = Application.Current.MainWindow;
+            window.Owner.Opacity = 0.7;
+        }
 
         TResult? result = default;
 
@@ -45,7 +48,11 @@ public class DialogService : IDialogService
             result = e.Result;
             window.DialogResult = e.DialogResult;
             window.Close();
-            ownerWindow.Opacity = 1;
+
+            if (window.Owner != null)
+            {
+                window.Owner.Opacity = 1;
+            }
         };
 
         var dialogResult = window.ShowDialog();
