@@ -35,7 +35,7 @@ public class DialogService : IDialogService
         window.Owner = Application.Current.MainWindow;
         window.DataContext = viewModel;
 
-        if (Application.Current?.MainWindow != null)
+        if (Application.Current.MainWindow != null)
         {
             window.Owner = Application.Current.MainWindow;
             window.Owner.Opacity = 0.7;

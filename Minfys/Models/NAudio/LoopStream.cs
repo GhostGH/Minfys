@@ -13,15 +13,9 @@ public class LoopStream : WaveStream
         this.EnableLooping = true;
     }
 
-    public override WaveFormat WaveFormat
-    {
-        get { return _sourceStream.WaveFormat; }
-    }
+    public override WaveFormat WaveFormat => _sourceStream.WaveFormat;
 
-    public override long Length
-    {
-        get { return _sourceStream.Length; }
-    }
+    public override long Length => _sourceStream.Length;
 
     public override long Position
     {
