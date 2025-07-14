@@ -180,12 +180,10 @@
                 <Button
                     Name="SaveButton" Content="Save"
                     Margin="5"
-                    FontSize="15"
                     Command="{Binding SaveSettingsCommand}" />
                 <Button Background="#4527A0" BorderBrush="#4527A0" Foreground="#F5F5F5"
                         Name="CloseButton" Content="Close"
                         Margin="5"
-                        FontSize="15"
                         Command="{Binding CloseWindowCommand}" />
             </StackPanel>
 

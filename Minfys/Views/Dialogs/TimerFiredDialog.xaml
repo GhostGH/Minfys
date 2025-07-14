@@ -6,24 +6,35 @@
         xmlns:dialogs="clr-namespace:Minfys.ViewModels.Dialogs"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=dialogs:TimerFiredDialogViewModel, IsDesignTimeCreatable=True}"
-        Title="TimerFired" Width="250" Height="150"
+        Title="TimerFired" Width="250" Height="140"
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
         ResizeMode="NoResize"
-        ShowInTaskbar="False">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center">
-            <TextBlock Text="Be mindful!"
-                       FontSize="30" />
-            <Button Content="Reset"
-                    Margin="10"
-                    Command="{Binding ResetTimerCommand}">
-            </Button>
-            <Button Content="Stop"
-                    Margin="10"
-                    Command="{Binding StopTimerCommand}">
-            </Button>
-        </StackPanel>
+        ShowInTaskbar="False"
+        Style="{StaticResource MaterialDesignWindow}">
+    <Border
+        BorderBrush="#5c5c5c"
+        BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="Be mindful!"
+                       FontSize="35" />
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <Button Content="Reset"
+                        Margin="10"
+                        Command="{Binding ResetTimerCommand}">
+                </Button>
+                <Button Content="Stop"
+                        Margin="10"
+                        Command="{Binding StopTimerCommand}">
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>
