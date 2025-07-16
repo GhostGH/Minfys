@@ -44,7 +44,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public void ChangeIntervalCommand_ShouldUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsTrue()
+    public void ChangeInterval_ShouldUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsTrue()
     {
         // Arrange
         bool? dialogResult = true;
@@ -63,7 +63,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public void ChangeIntervalCommand_ShouldNotUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsFalse()
+    public void ChangeInterval_ShouldNotUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsFalse()
     {
         // Arrange
         var originalInterval = _viewModel.CurrentInterval;
@@ -85,7 +85,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public void ChangeIntervalCommand_ShouldNotUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsNullInterval()
+    public void ChangeInterval_ShouldNotUpdateCurrentIntervalAndDisplayTime_WhenDialogReturnsNullInterval()
     {
         // Arrange
         var originalInterval = _viewModel.CurrentInterval;
