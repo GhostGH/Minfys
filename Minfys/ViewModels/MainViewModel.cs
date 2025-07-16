@@ -93,6 +93,23 @@ public partial class MainViewModel : ViewModelBase
         DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
     }
 
+    [RelayCommand]
+    private void OpenOptions()
+    {
+        _dialogService.ShowDialog<OptionsDialogViewModel, object>();
+    }
+
+    private void TimerOnTick(object? sender, EventArgs e)
+    {
+        _remainingSeconds--;
+        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+
+        if (_remainingSeconds <= 0)
+        {
+            TimerFire();
+        }
+    }
+
     private void TimerFire()
     {
         _logger.LogInformation("Timer fired");
@@ -155,23 +172,6 @@ public partial class MainViewModel : ViewModelBase
 
         _audioFileReader?.Dispose();
         _audioFileReader = null;
-    }
-
-    [RelayCommand]
-    private void OpenOptions()
-    {
-        _dialogService.ShowDialog<OptionsDialogViewModel, object>();
-    }
-
-    private void TimerOnTick(object? sender, EventArgs e)
-    {
-        _remainingSeconds--;
-        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
-
-        if (_remainingSeconds <= 0)
-        {
-            TimerFire();
-        }
     }
 
     private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
