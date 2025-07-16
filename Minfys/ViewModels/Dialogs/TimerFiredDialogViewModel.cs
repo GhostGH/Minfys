@@ -17,13 +17,16 @@ public partial class TimerFiredDialogViewModel : ViewModelBase, IRequestCloseVie
     [RelayCommand]
     private void ResetTimer()
     {
-        _logger.LogInformation("User chooses to reset timer");
+        _logger.LogInformation("In {ViewModel}, user pressed button to reset timer", nameof(TimerFiredDialogViewModel));
+
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<bool>(true, true));
     }
 
     [RelayCommand]
     private void StopTimer()
     {
+        _logger.LogInformation("In {ViewModel}, user pressed button to stop timer", nameof(TimerFiredDialogViewModel));
+
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<bool>(false, false));
     }
 
