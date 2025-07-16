@@ -6,7 +6,7 @@ namespace Minfys.Services;
 /// <summary>
 /// Manages application's auto launch functionality.
 /// </summary>
-public class AutoLaunchService
+public class AutoLaunchService : IAutoLaunchService
 {
     private const string AppName = "Minfys";
     private const string RegistryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
