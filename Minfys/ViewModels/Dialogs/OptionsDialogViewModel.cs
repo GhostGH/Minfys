@@ -17,8 +17,17 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     private readonly SystemOptions _systemOptions;
 
     [ObservableProperty] private string? _songPath;
+
+    /// <summary>
+    /// Indicates whether song loop option is enabled.
+    /// </summary>
     [ObservableProperty] private bool _loopEnabled;
+
+    /// <summary>
+    /// Indicates whether to enable in UI checkbox for song loop.
+    /// </summary>
     [ObservableProperty] private bool _isLoopOptionAvailable;
+
     [ObservableProperty] private float _audioVolume;
     [ObservableProperty] private bool _trayEnabled;
     [ObservableProperty] private bool _autoLaunchEnabled;
