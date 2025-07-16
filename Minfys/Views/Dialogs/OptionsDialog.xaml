@@ -46,12 +46,13 @@
 
         <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="70"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="70" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Style="{StaticResource SettingBorderStyle}">
@@ -141,7 +142,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="3" Style="{StaticResource SettingBorderStyle}">
+            <Border Grid.Row="4" Style="{StaticResource SettingBorderStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -158,7 +159,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="4" Style="{StaticResource SettingBorderStyle}">
+            <Border Grid.Row="5" Style="{StaticResource SettingBorderStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -175,7 +176,23 @@
                 </Grid>
             </Border>
 
-            <StackPanel Grid.Row="5"
+            <Border Grid.Row="3" Style="{StaticResource SettingBorderStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource SettingsTextBlockStyle}"
+                               Text="Choose timer audio file (.mp3)">
+                    </TextBlock>
+                    <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Content="Browse..."
+                            Command="{Binding ChooseTimerAudioFileCommand}" />
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="6"
                         Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button
                     Name="SaveButton" Content="Save"
