@@ -71,6 +71,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void TimerModeOptionChanged()
     {
+        _logger.LogInformation("Timer mode changed | ViewModel: {ViewModel}, NewValue: {TimerMode}",
+            nameof(OptionsDialogViewModel), TimerMode);
+
         if (TimerMode == TimerModesOptions.TimerModesEnum.Looping)
         {
             IsLoopOptionAvailable = false;
@@ -89,24 +92,36 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void LoopOptionChanged()
     {
+        _logger.LogInformation("Loop option changed | ViewModel: {ViewModel}, NewValue: {LoopEnabled}",
+            nameof(OptionsDialogViewModel), LoopEnabled);
+
         _audioOptions.LoopEnabled = LoopEnabled;
     }
 
     [RelayCommand]
     private void TrayOptionChanged()
     {
+        _logger.LogInformation("Tray option changed | ViewModel: {ViewModel}, NewValue: {TrayEnabled}",
+            nameof(OptionsDialogViewModel), TrayEnabled);
+
         _systemOptions.EnableCloseToTray = TrayEnabled;
     }
 
     [RelayCommand]
     private void AutoLaunchOptionChanged()
     {
+        _logger.LogInformation("Auto launch option changed | ViewModel: {ViewModel}, NewValue: {AutoLaunchEnabled}",
+            nameof(OptionsDialogViewModel), AutoLaunchEnabled);
+
         _systemOptions.EnableAutoLaunch = AutoLaunchEnabled;
     }
 
     [RelayCommand]
     private void SaveSettings()
     {
+        _logger.LogInformation("User pressed button to save settings | ViewModel: {ViewModel}",
+            nameof(OptionsDialogViewModel));
+
         // It's here because Slider and NAudio use different variables, so no binding property for this one
         _audioOptions.Volume = AudioVolume;
 
@@ -122,7 +137,8 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void CloseWindow()
     {
-        _logger.LogInformation("Closing settings");
+        _logger.LogInformation("Closing settings | ViewModel: {ViewModel}", nameof(OptionsDialogViewModel));
+
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<object>(true));
     }
 
