@@ -33,7 +33,7 @@
             </Grid.ColumnDefinitions>
             <tb:TaskbarIcon x:Name="TrayIcon"
                             Visibility="Hidden"
-                            IconSource="/Assets/Tray.ico"
+                            IconSource="/Assets/AppIcon.ico"
                             ToolTipText="My App"
                             PopupActivation="DoubleClick"
                             TrayMouseDoubleClick="TrayIcon_OnTrayMouseDoubleClick">
