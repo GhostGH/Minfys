@@ -53,9 +53,9 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <None Remove="Assets\Icons\AppIcon.ico"/>
-        <Content Include="Assets\Icons\AppIcon.ico">
+        <Resource Include="Assets\Icons\AppIcon.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        </Resource>
     </ItemGroup>
 
     <ItemGroup>
