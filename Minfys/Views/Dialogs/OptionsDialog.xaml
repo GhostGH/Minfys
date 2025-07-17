@@ -58,11 +58,11 @@
             <Border Grid.Row="0" Style="{StaticResource SettingBorderStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Timer mode" Style="{StaticResource SettingsTextBlockStyle}"></TextBlock>
-                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                    <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                               ItemsSource="{Binding Source={x:Static options:TimerModesOptions.AvailableModes}}"
                               SelectedItem="{Binding TimerMode}">
                         <i:Interaction.Triggers>
@@ -142,11 +142,11 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="4" Style="{StaticResource SettingBorderStyle}">
+            <Border Grid.Row="3" Style="{StaticResource SettingBorderStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Minimize to System Tray on close"
@@ -159,11 +159,11 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="5" Style="{StaticResource SettingBorderStyle}">
+            <Border Grid.Row="4" Style="{StaticResource SettingBorderStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Style="{StaticResource SettingsTextBlockStyle}"
@@ -176,21 +176,21 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="3" Style="{StaticResource SettingBorderStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Style="{StaticResource SettingsTextBlockStyle}"
-                               Text="Choose timer audio file (.mp3)">
-                    </TextBlock>
-                    <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"
-                            Content="Browse..."
-                            Command="{Binding ChooseTimerAudioFileCommand}" />
-                </Grid>
-            </Border>
+            <!-- <Border Grid.Row="3" Style="{StaticResource SettingBorderStyle}"> -->
+            <!--     <Grid> -->
+            <!--         <Grid.ColumnDefinitions> -->
+            <!--             <ColumnDefinition Width="Auto" /> -->
+            <!--             <ColumnDefinition /> -->
+            <!--         </Grid.ColumnDefinitions> -->
+            <!-- -->
+            <!--         <TextBlock Style="{StaticResource SettingsTextBlockStyle}" -->
+            <!--                    Text="Choose timer audio file (.mp3)"> -->
+            <!--         </TextBlock> -->
+            <!--         <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" -->
+            <!--                 Content="Browse..." -->
+            <!--                 Command="{Binding ChooseTimerAudioFileCommand}" /> -->
+            <!--     </Grid> -->
+            <!-- </Border> -->
 
             <StackPanel Grid.Row="6"
                         Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
