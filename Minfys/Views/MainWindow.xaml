@@ -8,103 +8,69 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:viewModels="clr-namespace:Minfys.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
-        Title="MainWindow" Height="550" Width="400"
+        Title="MainWindow" Height="520" Width="350"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}">
-    <Border
-        BorderBrush="#5c5c5c"
-        BorderThickness="2">
-        <Grid ShowGridLines="True">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <tb:TaskbarIcon x:Name="TrayIcon"
-                            Visibility="Hidden"
-                            IconSource="/Assets/Icons/AppIcon.ico"
-                            ToolTipText="My App"
-                            PopupActivation="DoubleClick"
-                            TrayMouseDoubleClick="TrayIcon_OnTrayMouseDoubleClick">
-                <tb:TaskbarIcon.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Open Minfys" Click="MenuOpen_OnClick" />
-                        <MenuItem Header="Exit" Click="MenuExit_OnClick" />
-                    </ContextMenu>
-                </tb:TaskbarIcon.ContextMenu>
-            </tb:TaskbarIcon>
-            <Button
-                Name="SettingsButton"
-                Grid.Column="0"
-                Grid.Row="0"
+    <DockPanel>
+        <tb:TaskbarIcon x:Name="TrayIcon"
+                        Visibility="Hidden"
+                        IconSource="pack://application:,,,/Assets/Icons/AppIcon.ico"
+                        ToolTipText="My App"
+                        PopupActivation="DoubleClick"
+                        TrayMouseDoubleClick="TrayIcon_OnTrayMouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Minfys" Click="MenuOpen_OnClick" />
+                    <MenuItem Header="Exit" Click="MenuExit_OnClick" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
+        <Button
+            Name="SettingsButton"
+            DockPanel.Dock="Top"
+            HorizontalAlignment="Left"
+            Style="{StaticResource MaterialDesignIconButton}"
+            Margin="16"
+            Foreground="MediumPurple"
+            Command="{Binding OpenOptionsCommand}">
+            <materialDesign:PackIcon Kind="Settings" />
+        </Button>
+        <Button DockPanel.Dock="Bottom" Margin="0,0,0,16"
+                Name="ChangeTimerIntervalButton"
+                Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Width="Auto"
-                Command="{Binding OpenOptionsCommand}">
-                <materialDesign:PackIcon Kind="Settings" />
-            </Button>
-            <Border
-                Grid.Column="1"
-                Grid.Row="0"
-                Grid.ColumnSpan="3"
-                Grid.RowSpan="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                BorderBrush="Aqua"
-                BorderThickness="2"
-                Margin="15">
-                <TextBlock
-                    Name="TimerCountdownTextBlock"
-                    FontSize="30"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <TextBlock Text="{Binding DisplayTime}" />
-                </TextBlock>
-            </Border>
-            <TextBlock
-                Name="CurrentTimerIntervalTextBlock"
-                Grid.Column="1"
-                Grid.Row="2"
-                Grid.ColumnSpan="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding CurrentInterval}">
-            </TextBlock>
+                Content="Change the interval"
+                FontSize="20"
+                Command="{Binding ChangeIntervalCommand}" />
+        <StackPanel DockPanel.Dock="Bottom"
+                    HorizontalAlignment="Center" Orientation="Horizontal"
+                    Margin="5">
             <Button
                 Name="StartTimerButton"
                 Content="Start"
-                Grid.Column="1"
-                Grid.Row="4"
-                Grid.ColumnSpan="3"
+                Margin="5"
                 FontSize="20"
                 Command="{Binding StartTimerCommand}" />
             <Button
                 Name="StopTimerButton"
                 Content="Stop"
-                Grid.Column="1"
-                Grid.Row="5"
-                Grid.ColumnSpan="3"
+                Margin="5"
                 FontSize="20"
                 Command="{Binding StopTimerCommand}" />
-            <Button
-                Name="ChangeTimerIntervalButton"
-                Content="Change the interval"
-                Grid.Column="1"
-                Grid.Row="6"
-                Grid.ColumnSpan="3"
-                FontSize="20"
-                Command="{Binding ChangeIntervalCommand}" />
+        </StackPanel>
+        <Grid>
+            <TextBlock Name="TimerCountdownTextBlock"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="{Binding DisplayTime}"
+                       FontSize="48"
+                       Margin="0,0,0,80" />
+            <TextBlock Name="CurrentTimerIntervalTextBlock"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Text="{Binding CurrentInterval}"
+                       FontSize="16"
+                       Margin="0,0,0,40" />
         </Grid>
-    </Border>
+    </DockPanel>
 </Window>
