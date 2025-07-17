@@ -88,7 +88,6 @@
                                Text="Enable song loop" Style="{StaticResource SettingsTextBlockStyle}">
                     </TextBlock>
                     <materialDesign:PackIcon Grid.Column="1" Style="{StaticResource IconStyle}"
-                                             VerticalAlignment="Center"
                                              Kind="InformationOutline"
                                              ToolTip="Loop cannot be enabled while Looping mode is enabled.">
                         <ToolTipService.ToolTip>
@@ -196,10 +195,10 @@
                         Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button
                     Name="SaveButton" Content="Save"
+                    Background="MediumPurple" BorderBrush="MediumPurple"
                     Margin="5"
                     Command="{Binding SaveSettingsCommand}" />
-                <Button Background="#4527A0" BorderBrush="#4527A0" Foreground="#F5F5F5"
-                        Name="CloseButton" Content="Close"
+                <Button Name="CloseButton" Content="Close"
                         Margin="5"
                         Command="{Binding CloseWindowCommand}" />
             </StackPanel>
