@@ -11,7 +11,7 @@ public class AudioOptions
     /// Full path to the audio file that will be played as a notification.
     /// </summary>
     public string FilePath { get; set; } =
-        "C://Programming projects//C#//Projects//Minfys//Minfys//Assets//Audio//quest_ding_1.mp3";
+        "//Assets//Audio//default_song.mp3";
 
     /// <summary>
     /// Indicates whether the audio should loop when played.

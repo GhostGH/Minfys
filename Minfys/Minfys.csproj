@@ -44,14 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Assets\Audio\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Remove="Assets\Audio\default_song.mp3"/>
-        <Content Include="Assets\Audio\default_song.mp3">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
         <None Remove="Assets\Icons\AppIcon.ico"/>
         <Resource Include="Assets\Icons\AppIcon.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
