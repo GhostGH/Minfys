@@ -27,7 +27,6 @@
         </tb:TaskbarIcon>
 
         <Button
-            Name="SettingsButton"
             DockPanel.Dock="Top"
             HorizontalAlignment="Left"
             Style="{StaticResource MaterialDesignIconButton}"
@@ -37,8 +36,6 @@
             <materialDesign:PackIcon Kind="Settings" />
         </Button>
         <Button DockPanel.Dock="Bottom" Margin="0,0,0,16"
-                Name="ChangeTimerIntervalButton"
-                Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3"
                 HorizontalAlignment="Center"
                 Content="Change the interval"
                 FontSize="20"
@@ -47,26 +44,22 @@
                     HorizontalAlignment="Center" Orientation="Horizontal"
                     Margin="5">
             <Button
-                Name="StartTimerButton"
                 Content="Start"
                 Margin="5"
                 FontSize="20"
                 Command="{Binding StartTimerCommand}" />
             <Button
-                Name="StopTimerButton"
                 Content="Stop"
                 Margin="5"
                 FontSize="20"
                 Command="{Binding StopTimerCommand}" />
         </StackPanel>
         <Grid>
-            <TextBlock Name="TimerCountdownTextBlock"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                        Text="{Binding DisplayTime}"
                        FontSize="48"
                        Margin="0,0,0,80" />
-            <TextBlock Name="CurrentTimerIntervalTextBlock"
-                       HorizontalAlignment="Center"
+            <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Bottom"
                        Text="{Binding CurrentInterval}"
                        FontSize="16"
