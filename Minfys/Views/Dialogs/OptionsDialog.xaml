@@ -194,7 +194,7 @@
             <StackPanel Grid.Row="6"
                         Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button
-                    Name="SaveButton" Content="Save"
+                    Content="Save"
                     Background="MediumPurple" BorderBrush="MediumPurple"
                     Margin="5"
                     Command="{Binding SaveSettingsCommand}" />
