@@ -17,9 +17,6 @@ using TimerFiredDialogViewModel = Minfys.ViewModels.Dialogs.TimerFiredDialogView
 
 namespace Minfys;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
 public partial class App : Application
 {
     private readonly IHost _host;
@@ -47,7 +44,17 @@ public partial class App : Application
             })
             .ConfigureAppConfiguration((hostContext, config) =>
             {
-                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                var uri = new Uri("pack://application:,,,/Minfys;component/appsettings.json", UriKind.Absolute);
+                var resourceInfo = GetResourceStream(uri);
+                if (resourceInfo != null)
+                {
+                    config.AddJsonStream(resourceInfo.Stream);
+                }
+                else
+                {
+                    throw new FileNotFoundException("Resource not found: appsettings.json", uri.ToString());
+                }
+
                 config.AddJsonFile(_userConfigPath, optional: true, reloadOnChange: true);
             })
             .ConfigureServices((hostContext, service) =>

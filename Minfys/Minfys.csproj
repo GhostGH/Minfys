@@ -27,12 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <Page Update="Views\Windows\ChangeTimerIntervalDialog.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>
@@ -47,6 +41,10 @@
         <None Remove="Assets\Icons\AppIcon.ico"/>
         <Resource Include="Assets\Icons\AppIcon.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="appsettings.json"/>
+        <Resource Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
     </ItemGroup>
 
