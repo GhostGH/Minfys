@@ -11,18 +11,28 @@ namespace Minfys.Tests.ViewModels;
 
 public class MainViewModelTests
 {
-    private readonly IOptionsMonitor<AudioOptions> _audioOptions;
-    private readonly IDialogService _dialogService;
     private readonly ILogger<MainViewModel> _logger;
+    private readonly IResourceService _resourceService;
+    private readonly IMessageService _messageService;
+    private readonly IDialogService _dialogService;
+    private readonly IOptionsMonitor<AudioOptions> _audioOptions;
     private readonly IOptionsMonitor<TimerModesOptions> _timerModesOptions;
     private readonly MainViewModel _viewModel;
 
     public MainViewModelTests()
     {
         _logger = Substitute.For<ILogger<MainViewModel>>();
+        _resourceService = Substitute.For<IResourceService>();
+        _messageService = Substitute.For<IMessageService>();
         _dialogService = Substitute.For<IDialogService>();
         _audioOptions = Substitute.For<IOptionsMonitor<AudioOptions>>();
         _timerModesOptions = Substitute.For<IOptionsMonitor<TimerModesOptions>>();
+
+        // Needed for tests to recognize Uri of default audio and other app resources
+        if (!UriParser.IsKnownScheme("pack"))
+        {
+            UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
+        }
 
 
         var audioOptions = new AudioOptions
@@ -40,7 +50,8 @@ public class MainViewModelTests
         _audioOptions.CurrentValue.Returns(audioOptions);
         _timerModesOptions.CurrentValue.Returns(timerModesOptions);
 
-        _viewModel = new MainViewModel(_logger, _dialogService, _audioOptions, _timerModesOptions);
+        _viewModel = new MainViewModel(_logger, _resourceService, _messageService, _dialogService, _audioOptions,
+            _timerModesOptions);
     }
 
     [Fact]
