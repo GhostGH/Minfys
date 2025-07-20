@@ -46,6 +46,10 @@
         <Resource Include="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
+        <None Remove="Assets\Audio\default_song.mp3"/>
+        <Resource Include="Assets\Audio\default_song.mp3">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
     </ItemGroup>
 
     <ItemGroup>

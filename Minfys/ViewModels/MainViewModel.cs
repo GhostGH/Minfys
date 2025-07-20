@@ -1,4 +1,5 @@
-﻿using System.Windows.Threading;
+﻿using System.IO;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -14,19 +15,25 @@ namespace Minfys.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly ILogger<MainViewModel> _logger;
+    private readonly IResourceService _resourceService;
+    private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
     private readonly DispatcherTimer _timer;
 
     private WaveOut? _waveOut;
     private LoopStream? _loopStream;
-    private AudioFileReader? _audioFileReader;
+    private Mp3FileReader? _audioFileReader;
     private TimerModesOptions.TimerModesEnum _timerMode;
-    private string _filePath;
+
+    private readonly Uri _defaultAudioFilePath;
+    private Stream? _stream;
     private bool _loopEnabled;
     private float _audioVolume;
 
     // Used for time calculations
     private int _remainingSeconds;
+
+    private const string TimeFormat = @"hh\:mm\:ss";
 
     // User-defined timer interval
     [ObservableProperty] private TimeSpan _currentInterval = TimeSpan.FromSeconds(7);
@@ -34,18 +41,23 @@ public partial class MainViewModel : ViewModelBase
     // Is used to display time in the UI
     [ObservableProperty] private string _displayTime;
 
-    public MainViewModel(ILogger<MainViewModel> logger, IDialogService dialogService,
+    public MainViewModel(ILogger<MainViewModel> logger, IResourceService resourceService,
+        IMessageService messageService, IDialogService dialogService,
         IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModesOptions)
     {
         _logger = logger;
+        _resourceService = resourceService;
+        _messageService = messageService;
         _dialogService = dialogService;
         AudioOptions currentAudioOptions = audioOptions.CurrentValue;
         TimerModesOptions currentTimerModesOptions = timerModesOptions.CurrentValue;
 
-        _filePath = currentAudioOptions.FilePath;
         _loopEnabled = currentAudioOptions.LoopEnabled;
         _audioVolume = currentAudioOptions.Volume;
         _timerMode = currentTimerModesOptions.TimerMode;
+
+        _defaultAudioFilePath = new Uri("pack://application:,,,/Minfys;component/Assets/Audio/default_song.mp3",
+            UriKind.Absolute);
 
         _timer = new DispatcherTimer
         {
@@ -53,7 +65,7 @@ public partial class MainViewModel : ViewModelBase
         };
 
         _remainingSeconds = (int)CurrentInterval.TotalSeconds;
-        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
 
         _timer.Tick += TimerOnTick;
         audioOptions.OnChange(AudioOptionsUpdated);
@@ -72,7 +84,7 @@ public partial class MainViewModel : ViewModelBase
         {
             CurrentInterval = (TimeSpan)result.Result;
             _remainingSeconds = (int)CurrentInterval.TotalSeconds;
-            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
         }
     }
 
@@ -90,7 +102,7 @@ public partial class MainViewModel : ViewModelBase
         _timer.Stop();
         _logger.LogInformation("Timer has been forcefully stopped with remaining time {Time}", _remainingSeconds);
         _remainingSeconds = (int)CurrentInterval.TotalSeconds;
-        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
     }
 
     [RelayCommand]
@@ -102,7 +114,7 @@ public partial class MainViewModel : ViewModelBase
     private void TimerOnTick(object? sender, EventArgs e)
     {
         _remainingSeconds--;
-        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
 
         if (_remainingSeconds <= 0)
         {
@@ -121,7 +133,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (_timerMode == TimerModesOptions.TimerModesEnum.Looping)
         {
-            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
             StartTimer();
         }
         else if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
@@ -131,12 +143,12 @@ public partial class MainViewModel : ViewModelBase
             if (result.Result == false)
             {
                 StopSound();
-                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
             }
             else
             {
                 StopSound();
-                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(@"hh\:mm\:ss");
+                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
                 StartTimer();
             }
         }
@@ -149,16 +161,29 @@ public partial class MainViewModel : ViewModelBase
             StopSound();
         }
 
-        _audioFileReader = new AudioFileReader(_filePath);
-        _audioFileReader.Volume = _audioVolume;
-        _loopStream = new LoopStream(_audioFileReader)
+        try
         {
-            EnableLooping = loopEnabled
-        };
+            _stream = _resourceService.GetResourceStream(_defaultAudioFilePath);
 
-        _waveOut = new WaveOut();
-        _waveOut.Init(_loopStream);
-        _waveOut.Play();
+            _audioFileReader = new Mp3FileReader(_stream);
+
+            var waveChannel = new WaveChannel32(_audioFileReader)
+            {
+                Volume = _audioVolume
+            };
+            _loopStream = new LoopStream(waveChannel) { EnableLooping = loopEnabled };
+
+            _waveOut = new WaveOut();
+            _waveOut.Init(_loopStream);
+            _waveOut.Play();
+        }
+        catch (Exception ex)
+        {
+            StopSound();
+            _logger.LogCritical(ex, "Probably failed to play audio on timer fired:" +
+                                    " the resource stream for default audio file is null somehow");
+            _messageService.ShowError("An Error has occured. See application logs in ~App Data/Roaming/Minfys/logs");
+        }
     }
 
     private void StopSound()
@@ -172,11 +197,13 @@ public partial class MainViewModel : ViewModelBase
 
         _audioFileReader?.Dispose();
         _audioFileReader = null;
+
+        _stream?.Dispose();
+        _stream = null;
     }
 
     private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
     {
-        _filePath = arg1.FilePath;
         _loopEnabled = arg1.LoopEnabled;
         _audioVolume = arg1.Volume;
     }

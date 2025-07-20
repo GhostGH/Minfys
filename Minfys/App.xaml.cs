@@ -70,10 +70,11 @@ public partial class App : Application
                 service.AddTransient<TimerFiredDialogViewModel>();
 
 
+                service.AddSingleton(provider => _userConfigPath);
                 service.AddSingleton<IMessageService, MessageService>();
                 service.AddSingleton<IDialogService, DialogService>();
-                service.AddSingleton(provider => _userConfigPath);
                 service.AddSingleton<IOptionsService, OptionsService>();
+                service.AddSingleton<IResourceService, ResourceService>();
                 service.AddSingleton<AutoLaunchService>();
 
                 service.AddOptions<AudioOptions>()
