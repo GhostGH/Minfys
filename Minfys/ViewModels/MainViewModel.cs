@@ -35,6 +35,16 @@ public partial class MainViewModel : ViewModelBase
 
     private const string TimeFormat = @"hh\:mm\:ss";
 
+    public enum StartButtonState
+    {
+        Start,
+        Pause,
+        Resume
+    }
+
+    [ObservableProperty] private StartButtonState _currentStartButtonState;
+    [ObservableProperty] private bool _stopTimerButtonEnabled;
+
     // User-defined timer interval
     [ObservableProperty] private TimeSpan _currentInterval = TimeSpan.FromSeconds(7);
 
@@ -55,6 +65,9 @@ public partial class MainViewModel : ViewModelBase
         _loopEnabled = currentAudioOptions.LoopEnabled;
         _audioVolume = currentAudioOptions.Volume;
         _timerMode = currentTimerModesOptions.TimerMode;
+
+        CurrentStartButtonState = StartButtonState.Start;
+        StopTimerButtonEnabled = false;
 
         _defaultAudioFilePath = new Uri("pack://application:,,,/Minfys;component/Assets/Audio/default_song.mp3",
             UriKind.Absolute);
@@ -91,9 +104,26 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void StartTimer()
     {
-        _remainingSeconds = (int)CurrentInterval.TotalSeconds;
-        _timer.Start();
-        _logger.LogInformation("Timer started with interval {Interval}", CurrentInterval);
+        if (StopTimerButtonEnabled == false)
+            StopTimerButtonEnabled = true;
+
+        switch (CurrentStartButtonState)
+        {
+            case StartButtonState.Start:
+                _remainingSeconds = (int)CurrentInterval.TotalSeconds;
+                _timer.Start();
+                _logger.LogInformation("Timer started with interval {Interval}", CurrentInterval);
+                CurrentStartButtonState = StartButtonState.Pause;
+                break;
+            case StartButtonState.Pause:
+                _timer.Stop();
+                CurrentStartButtonState = StartButtonState.Resume;
+                break;
+            case StartButtonState.Resume:
+                _timer.Start();
+                CurrentStartButtonState = StartButtonState.Pause;
+                break;
+        }
     }
 
     [RelayCommand]
@@ -103,6 +133,8 @@ public partial class MainViewModel : ViewModelBase
         _logger.LogInformation("Timer has been forcefully stopped with remaining time {Time}", _remainingSeconds);
         _remainingSeconds = (int)CurrentInterval.TotalSeconds;
         DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
+        CurrentStartButtonState = StartButtonState.Start;
+        StopTimerButtonEnabled = false;
     }
 
     [RelayCommand]
@@ -129,11 +161,13 @@ public partial class MainViewModel : ViewModelBase
         _timer.Stop();
         _remainingSeconds = 0;
         _remainingSeconds = (int)CurrentInterval.TotalSeconds;
+        DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
+        CurrentStartButtonState = StartButtonState.Start;
+        StopTimerButtonEnabled = false;
         PlaySound(_loopEnabled);
 
         if (_timerMode == TimerModesOptions.TimerModesEnum.Looping)
         {
-            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
             StartTimer();
         }
         else if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
@@ -143,12 +177,10 @@ public partial class MainViewModel : ViewModelBase
             if (result.Result == false)
             {
                 StopSound();
-                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
             }
             else
             {
                 StopSound();
-                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
                 StartTimer();
             }
         }

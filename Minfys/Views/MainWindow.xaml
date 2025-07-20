@@ -9,8 +9,202 @@
         xmlns:viewModels="clr-namespace:Minfys.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="520" Width="350"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}">
+    <Window.Resources>
+        <Style x:Key="ButtonIcon" TargetType="materialDesign:PackIcon">
+            <Setter Property="Width" Value="19" />
+            <Setter Property="Height" Value="19" />
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0,0,5,0"></Setter>
+        </Style>
+        <Style x:Key="TimerControlButtonStyle" TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Width" Value="127" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="8" />
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp2" />
+        </Style>
+
+        <Style x:Key="StartButtonStyle" TargetType="Button" BasedOn="{StaticResource TimerControlButtonStyle}">
+            <Setter Property="Background" Value="#4CAF50" />
+            <Setter Property="BorderBrush" Value="#3D8B40" />
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentStartButtonState}" Value="Start">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Play"
+                                                         Style="{StaticResource ButtonIcon}">
+                                    <materialDesign:PackIcon.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </materialDesign:PackIcon.RenderTransform>
+                                    <materialDesign:PackIcon.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     From="0" To="1" Duration="0:0:0.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </materialDesign:PackIcon.Triggers>
+                                </materialDesign:PackIcon>
+                                <TextBlock Text="Start" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentStartButtonState}" Value="Pause">
+                    <Setter Property="Background" Value="CornflowerBlue" />
+                    <Setter Property="BorderBrush" Value="RoyalBlue"></Setter>
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Pause"
+                                                         Style="{StaticResource ButtonIcon}">
+                                    <materialDesign:PackIcon.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </materialDesign:PackIcon.RenderTransform>
+                                    <materialDesign:PackIcon.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     From="0" To="1" Duration="0:0:0.1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </materialDesign:PackIcon.Triggers>
+                                </materialDesign:PackIcon>
+                                <TextBlock Text="Pause" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentStartButtonState}" Value="Resume">
+                    <Setter Property="Background" Value="CornflowerBlue" />
+                    <Setter Property="BorderBrush" Value="RoyalBlue"></Setter>
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <StackPanel Orientation="Horizontal" Margin="0">
+                                <materialDesign:PackIcon Kind="PlayCircle"
+                                                         Style="{StaticResource ButtonIcon}">
+                                    <materialDesign:PackIcon.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </materialDesign:PackIcon.RenderTransform>
+                                    <materialDesign:PackIcon.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                                     From="0" To="1" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <BackEase EasingMode="EaseOut" Amplitude="0.3" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     From="0" To="1" Duration="0:0:0.1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </materialDesign:PackIcon.Triggers>
+                                </materialDesign:PackIcon>
+                                <TextBlock Text="Resume" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding CurrentStartButtonState}" Value="Start" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                   Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="#3D8B40" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding CurrentStartButtonState}" Value="Pause" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                   Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="RoyalBlue" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding CurrentStartButtonState}" Value="Resume" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"
+                                   Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="RoyalBlue" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StopButtonStyle" TargetType="Button" BasedOn="{StaticResource TimerControlButtonStyle}">
+            <Setter Property="Background" Value="#F44336" />
+            <Setter Property="BorderBrush" Value="#DA190B" />
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DA190B" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="IntervalButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Padding" Value="20,8" />
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="20" />
+            <Setter Property="BorderBrush" Value="MediumPurple" />
+            <Setter Property="Foreground" Value="MediumPurple" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="MediumPurple" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <tb:TaskbarIcon x:Name="TrayIcon"
                         Visibility="Hidden"
@@ -35,24 +229,31 @@
             Command="{Binding OpenOptionsCommand}">
             <materialDesign:PackIcon Kind="Settings" />
         </Button>
-        <Button DockPanel.Dock="Bottom" Margin="0,0,0,16"
-                HorizontalAlignment="Center"
+        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Center"
+                Style="{StaticResource IntervalButtonStyle}"
                 Content="Change the interval"
+                Margin="0,0,0,16"
                 FontSize="20"
                 Command="{Binding ChangeIntervalCommand}" />
         <StackPanel DockPanel.Dock="Bottom"
                     HorizontalAlignment="Center" Orientation="Horizontal"
                     Margin="5">
-            <Button
-                Content="Start"
-                Margin="5"
-                FontSize="20"
-                Command="{Binding StartTimerCommand}" />
-            <Button
-                Content="Stop"
-                Margin="5"
-                FontSize="20"
-                Command="{Binding StopTimerCommand}" />
+            <Button Style="{StaticResource StartButtonStyle}"
+                    Margin="5"
+                    FontSize="20"
+                    Command="{Binding StartTimerCommand}">
+            </Button>
+            <Button Style="{StaticResource StopButtonStyle}"
+                    Margin="5"
+                    FontSize="20"
+                    IsEnabled="{Binding StopTimerButtonEnabled}"
+                    Command="{Binding StopTimerCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Stop"
+                                             Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="Stop" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
         </StackPanel>
         <Grid>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -63,7 +264,8 @@
                        VerticalAlignment="Bottom"
                        Text="{Binding CurrentInterval}"
                        FontSize="16"
-                       Margin="0,0,0,40" />
+                       Margin="0,0,0,40"
+                       Opacity="0.5" />
         </Grid>
     </DockPanel>
 </Window>
