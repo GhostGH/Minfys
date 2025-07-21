@@ -15,6 +15,7 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
+        AllowsTransparency="True"
         Style="{StaticResource MaterialDesignWindow}">
     <Window.Resources>
         <Style x:Key="SettingBorderStyle" TargetType="Border">
@@ -40,6 +41,29 @@
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
         </Style>
     </Window.Resources>
+
+    <Window.RenderTransform>
+        <ScaleTransform x:Name="ScaleTransform" ScaleX="1" ScaleY="1" />
+    </Window.RenderTransform>
+    <Window.RenderTransformOrigin>0.5,0.5</Window.RenderTransformOrigin>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                     Storyboard.TargetProperty="ScaleX"
+                                     From="0.5" To="1" Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                     Storyboard.TargetProperty="ScaleY"
+                                     From="0.5" To="1" Duration="0:0:0.1" />
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1" Duration="0:0:0.1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
     <Border
         BorderBrush="#5c5c5c"
         BorderThickness="2">
