@@ -16,4 +16,12 @@ public interface IDialogService
     /// Result (TResult) containing the data returned from the dialog.</returns>
     (bool? DialogResult, TResult? Result) ShowDialog<TViewModel, TResult>()
         where TViewModel : class, IRequestCloseViewModel<TResult>;
+
+    /// <summary>
+    /// Opens a dialog window using its View Model type and return only the dialog result.
+    /// </summary>
+    /// <typeparam name="TViewModel"></typeparam>
+    /// <returns>The type of dialog's View Model which must implement IRequestCloseViewModel.</returns>
+    bool? ShowDialog<TViewModel>()
+        where TViewModel : class, IRequestCloseViewModel<object>;
 }
