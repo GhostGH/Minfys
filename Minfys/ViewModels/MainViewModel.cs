@@ -14,26 +14,24 @@ namespace Minfys.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    private const string TimeFormat = @"hh\:mm\:ss";
+
     private readonly ILogger<MainViewModel> _logger;
     private readonly IResourceService _resourceService;
     private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
     private readonly DispatcherTimer _timer;
+    private readonly Uri _defaultAudioFilePath;
 
     private WaveOut? _waveOut;
     private LoopStream? _loopStream;
     private Mp3FileReader? _audioFileReader;
-    private TimerModesOptions.TimerModesEnum _timerMode;
-
-    private readonly Uri _defaultAudioFilePath;
     private Stream? _stream;
+
+    private TimerOptions.TimerModesEnum _timerMode;
     private bool _loopEnabled;
     private float _audioVolume;
-
-    // Used for time calculations
-    private int _remainingSeconds;
-
-    private const string TimeFormat = @"hh\:mm\:ss";
+    private int _remainingSeconds; // Used for time calculations
 
     public enum StartButtonState
     {
@@ -44,27 +42,24 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private StartButtonState _currentStartButtonState;
     [ObservableProperty] private bool _stopTimerButtonEnabled;
-
-    // User-defined timer interval
-    [ObservableProperty] private TimeSpan _currentInterval = TimeSpan.FromSeconds(7);
-
-    // Is used to display time in the UI
-    [ObservableProperty] private string _displayTime;
+    [ObservableProperty] private TimeSpan _currentInterval; // User-defined timer interval
+    [ObservableProperty] private string _displayTime; // Is used to display time in the UI
 
     public MainViewModel(ILogger<MainViewModel> logger, IResourceService resourceService,
         IMessageService messageService, IDialogService dialogService,
-        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerModesOptions> timerModesOptions)
+        IOptionsMonitor<AudioOptions> audioOptions, IOptionsMonitor<TimerOptions> timerModesOptions)
     {
         _logger = logger;
         _resourceService = resourceService;
         _messageService = messageService;
         _dialogService = dialogService;
         AudioOptions currentAudioOptions = audioOptions.CurrentValue;
-        TimerModesOptions currentTimerModesOptions = timerModesOptions.CurrentValue;
+        TimerOptions currentTimerOptions = timerModesOptions.CurrentValue;
 
+        _currentInterval = currentTimerOptions.TimerInterval;
         _loopEnabled = currentAudioOptions.LoopEnabled;
         _audioVolume = currentAudioOptions.Volume;
-        _timerMode = currentTimerModesOptions.TimerMode;
+        _timerMode = currentTimerOptions.TimerMode;
 
         CurrentStartButtonState = StartButtonState.Start;
         StopTimerButtonEnabled = false;
@@ -82,23 +77,31 @@ public partial class MainViewModel : ViewModelBase
 
         _timer.Tick += TimerOnTick;
         audioOptions.OnChange(AudioOptionsUpdated);
-        timerModesOptions.OnChange(TimerModesOptionsUpdated);
+        timerModesOptions.OnChange(TimerOptionsUpdated);
 
         _logger.LogInformation("{ViewModel} created", nameof(MainViewModel));
     }
 
+    // Commands
     [RelayCommand]
     private void ChangeInterval()
     {
+        _logger.LogInformation("Command: {Command} activated", nameof(ChangeIntervalCommand));
+
         var result = _dialogService.ShowDialog<ChangeTimerIntervalDialogViewModel, TimeSpan?>();
-        _logger.LogInformation("Result received: {Result}", result);
 
         if (result.Result != null)
         {
             CurrentInterval = (TimeSpan)result.Result;
-            _remainingSeconds = (int)CurrentInterval.TotalSeconds;
-            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
+
+            if (!_timer.IsEnabled)
+            {
+                _remainingSeconds = (int)CurrentInterval.TotalSeconds;
+                DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
+            }
         }
+
+        _logger.LogInformation("Command: {Command} | Result: {Result}", nameof(ChangeIntervalCommand), result);
     }
 
     [RelayCommand]
@@ -143,6 +146,7 @@ public partial class MainViewModel : ViewModelBase
         _dialogService.ShowDialog<OptionsDialogViewModel, object>();
     }
 
+    // Event Handles
     private void TimerOnTick(object? sender, EventArgs e)
     {
         _remainingSeconds--;
@@ -154,6 +158,26 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
+    {
+        _loopEnabled = arg1.LoopEnabled;
+        _audioVolume = arg1.Volume;
+    }
+
+    private void TimerOptionsUpdated(TimerOptions arg1, string? arg2)
+    {
+        _timerMode = arg1.TimerMode;
+
+        if (CurrentInterval == arg1.TimerInterval) return;
+        CurrentInterval = arg1.TimerInterval;
+        if (!_timer.IsEnabled)
+        {
+            _remainingSeconds = (int)CurrentInterval.TotalSeconds;
+            DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
+        }
+    }
+
+    // Private Methods
     private void TimerFire()
     {
         _logger.LogInformation("Timer fired");
@@ -166,11 +190,11 @@ public partial class MainViewModel : ViewModelBase
         StopTimerButtonEnabled = false;
         PlaySound(_loopEnabled);
 
-        if (_timerMode == TimerModesOptions.TimerModesEnum.Looping)
+        if (_timerMode == TimerOptions.TimerModesEnum.Looping)
         {
             StartTimer();
         }
-        else if (_timerMode == TimerModesOptions.TimerModesEnum.Single)
+        else if (_timerMode == TimerOptions.TimerModesEnum.Single)
         {
             var result = _dialogService.ShowDialog<TimerFiredDialogViewModel, bool>();
 
@@ -232,16 +256,5 @@ public partial class MainViewModel : ViewModelBase
 
         _stream?.Dispose();
         _stream = null;
-    }
-
-    private void AudioOptionsUpdated(AudioOptions arg1, string? arg2)
-    {
-        _loopEnabled = arg1.LoopEnabled;
-        _audioVolume = arg1.Volume;
-    }
-
-    private void TimerModesOptionsUpdated(TimerModesOptions arg1, string? arg2)
-    {
-        _timerMode = arg1.TimerMode;
     }
 }

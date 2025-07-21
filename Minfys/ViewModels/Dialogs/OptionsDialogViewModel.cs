@@ -13,7 +13,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     private readonly AutoLaunchService _autoLaunchService;
     private readonly IOptionsService _optionsService;
     private readonly AudioOptions _audioOptions;
-    private readonly TimerModesOptions _timerModesOptions;
+    private readonly TimerOptions _timerOptions;
     private readonly SystemOptions _systemOptions;
 
     [ObservableProperty] private string? _songPath;
@@ -42,17 +42,17 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         }
     }
 
-    [ObservableProperty] private TimerModesOptions.TimerModesEnum _timerMode;
+    [ObservableProperty] private TimerOptions.TimerModesEnum _timerMode;
 
     public OptionsDialogViewModel(ILogger<OptionsDialogViewModel> logger, AutoLaunchService autoLaunchService,
         IOptionsService optionsService, IOptionsMonitor<AudioOptions> audioOptions,
-        IOptionsMonitor<TimerModesOptions> timerModsOptions, IOptionsMonitor<SystemOptions> systemOptions)
+        IOptionsMonitor<TimerOptions> timerModsOptions, IOptionsMonitor<SystemOptions> systemOptions)
     {
         _logger = logger;
         _autoLaunchService = autoLaunchService;
         _optionsService = optionsService;
         _audioOptions = audioOptions.CurrentValue;
-        _timerModesOptions = timerModsOptions.CurrentValue;
+        _timerOptions = timerModsOptions.CurrentValue;
         _systemOptions = systemOptions.CurrentValue;
 
         _songPath = _audioOptions.FilePath;
@@ -61,9 +61,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _trayEnabled = _systemOptions.EnableCloseToTray;
         _autoLaunchEnabled = _systemOptions.EnableAutoLaunch;
 
-        _timerMode = _timerModesOptions.TimerMode;
+        _timerMode = _timerOptions.TimerMode;
         // lol
-        _isLoopOptionAvailable = (TimerMode != TimerModesOptions.TimerModesEnum.Looping);
+        _isLoopOptionAvailable = (TimerMode != TimerOptions.TimerModesEnum.Looping);
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
@@ -74,7 +74,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _logger.LogInformation("Timer mode changed | ViewModel: {ViewModel}, NewValue: {TimerMode}",
             nameof(OptionsDialogViewModel), TimerMode);
 
-        if (TimerMode == TimerModesOptions.TimerModesEnum.Looping)
+        if (TimerMode == TimerOptions.TimerModesEnum.Looping)
         {
             IsLoopOptionAvailable = false;
             LoopEnabled = false;
@@ -86,7 +86,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
             _audioOptions.LoopEnabled = LoopEnabled;
         }
 
-        _timerModesOptions.TimerMode = TimerMode;
+        _timerOptions.TimerMode = TimerMode;
     }
 
     [RelayCommand]
@@ -127,7 +127,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
 
         _autoLaunchService.SetAutoLaunch(AutoLaunchEnabled);
 
-        _optionsService.Save(_timerModesOptions, TimerModesOptions.Key);
+        _optionsService.Save(_timerOptions, TimerOptions.Key);
         _optionsService.Save(_audioOptions, AudioOptions.Key);
         _optionsService.Save(_systemOptions, SystemOptions.Key);
 

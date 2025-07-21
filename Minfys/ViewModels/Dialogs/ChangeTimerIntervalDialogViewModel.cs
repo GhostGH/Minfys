@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Minfys.Models.Options;
 using Minfys.Services;
 
 namespace Minfys.ViewModels.Dialogs;
@@ -9,14 +11,20 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
 {
     private readonly ILogger<ChangeTimerIntervalDialogViewModel> _logger;
     private readonly IMessageService _messageService;
+    private readonly IOptionsService _optionsService;
+    private readonly TimerOptions _timerOptions;
 
+    [ObservableProperty] private TimeSpan _timerInterval;
     [ObservableProperty] private bool? _dialogResult;
 
     public ChangeTimerIntervalDialogViewModel(ILogger<ChangeTimerIntervalDialogViewModel> logger,
-        IMessageService messageService)
+        IMessageService messageService, IOptionsService optionsService, IOptionsMonitor<TimerOptions> timerOptions)
     {
         _logger = logger;
         _messageService = messageService;
+        _optionsService = optionsService;
+        _timerOptions = timerOptions.CurrentValue;
+
         _logger.LogInformation("{ViewModel} created", nameof(ChangeTimerIntervalDialogViewModel));
     }
 
@@ -25,6 +33,8 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
     {
         if (TimeSpan.TryParse(textValue, out var ts))
         {
+            _timerOptions.TimerInterval = ts;
+            _optionsService.Save(_timerOptions, TimerOptions.Key);
             _logger.LogInformation("Interval change successful with a value {NewInterval}", textValue);
             RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(true, ts));
         }

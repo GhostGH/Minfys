@@ -81,8 +81,8 @@ public partial class App : Application
                     .Bind(hostContext.Configuration.GetSection(AudioOptions.Key));
                 service.AddOptions<SystemOptions>()
                     .Bind(hostContext.Configuration.GetSection(SystemOptions.Key));
-                service.AddOptions<TimerModesOptions>()
-                    .Bind(hostContext.Configuration.GetSection(TimerModesOptions.Key));
+                service.AddOptions<TimerOptions>()
+                    .Bind(hostContext.Configuration.GetSection(TimerOptions.Key));
             }).Build();
     }
 

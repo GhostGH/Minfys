@@ -3,7 +3,7 @@
 /// <summary>
 /// Contains configuration for available timer modes.
 /// </summary>
-public class TimerModesOptions
+public class TimerOptions
 {
     public const string Key = "ModeOptions";
 
@@ -32,4 +32,9 @@ public class TimerModesOptions
     /// Currently selected timer mode.
     /// </summary>
     public TimerModesEnum TimerMode { get; set; } = TimerModesEnum.Looping;
+
+    /// <summary>
+    /// Current timer interval.
+    /// </summary>
+    public TimeSpan TimerInterval { get; set; } = TimeSpan.Zero;
 }
