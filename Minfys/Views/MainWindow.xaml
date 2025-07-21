@@ -224,7 +224,7 @@
             DockPanel.Dock="Top"
             HorizontalAlignment="Left"
             Style="{StaticResource MaterialDesignIconButton}"
-            Margin="16"
+            Margin="12"
             Foreground="MediumPurple"
             Command="{Binding OpenOptionsCommand}">
             <materialDesign:PackIcon Kind="Settings" />
