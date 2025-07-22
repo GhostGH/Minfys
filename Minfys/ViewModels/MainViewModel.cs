@@ -223,21 +223,21 @@ public partial class MainViewModel : ViewModelBase
 
             _audioFileReader = new Mp3FileReader(_stream);
 
-            var waveChannel = new WaveChannel32(_audioFileReader)
+            _loopStream = new LoopStream(_audioFileReader) { EnableLooping = loopEnabled };
+            var loopChanel = new WaveChannel32(_loopStream)
             {
                 Volume = _audioVolume
             };
-            _loopStream = new LoopStream(waveChannel) { EnableLooping = loopEnabled };
 
             _waveOut = new WaveOut();
-            _waveOut.Init(_loopStream);
+            _waveOut.Init(loopChanel);
             _waveOut.Play();
         }
         catch (Exception ex)
         {
             StopSound();
-            _logger.LogCritical(ex, "Probably failed to play audio on timer fired:" +
-                                    " the resource stream for default audio file is null somehow");
+            _logger.LogCritical(ex,
+                "Probably failed to play audio on timer fired: the resource stream for default audio file is null somehow");
             _messageService.ShowError("An Error has occured. See application logs in ~App Data/Roaming/Minfys/logs");
         }
     }
