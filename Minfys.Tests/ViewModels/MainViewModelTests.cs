@@ -16,7 +16,7 @@ public class MainViewModelTests
     private readonly IMessageService _messageService;
     private readonly IDialogService _dialogService;
     private readonly IOptionsMonitor<AudioOptions> _audioOptions;
-    private readonly IOptionsMonitor<TimerModesOptions> _timerModesOptions;
+    private readonly IOptionsMonitor<TimerOptions> _timerModesOptions;
     private readonly MainViewModel _viewModel;
 
     public MainViewModelTests()
@@ -26,7 +26,7 @@ public class MainViewModelTests
         _messageService = Substitute.For<IMessageService>();
         _dialogService = Substitute.For<IDialogService>();
         _audioOptions = Substitute.For<IOptionsMonitor<AudioOptions>>();
-        _timerModesOptions = Substitute.For<IOptionsMonitor<TimerModesOptions>>();
+        _timerModesOptions = Substitute.For<IOptionsMonitor<TimerOptions>>();
 
         // Needed for tests to recognize Uri of default audio and other app resources
         if (!UriParser.IsKnownScheme("pack"))
@@ -42,9 +42,10 @@ public class MainViewModelTests
             Volume = 0.3f
         };
 
-        var timerModesOptions = new TimerModesOptions
+        var timerModesOptions = new TimerOptions
         {
-            TimerMode = TimerModesOptions.TimerModesEnum.Single
+            TimerInterval = TimeSpan.FromSeconds(10),
+            TimerMode = TimerOptions.TimerModesEnum.Single
         };
 
         _audioOptions.CurrentValue.Returns(audioOptions);

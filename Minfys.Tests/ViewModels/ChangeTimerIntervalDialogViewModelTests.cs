@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Minfys.Models.Options;
 using Minfys.Services;
 using Minfys.ViewModels.Dialogs;
 using NSubstitute;
@@ -10,14 +12,26 @@ public class ChangeTimerIntervalDialogViewModelTests
 {
     private readonly ILogger<ChangeTimerIntervalDialogViewModel> _logger;
     private readonly IMessageService _messageService;
+    private readonly IOptionsService _optionsService;
+    private readonly IOptionsMonitor<TimerOptions> _timerOptions;
     private readonly ChangeTimerIntervalDialogViewModel _viewModel;
 
     public ChangeTimerIntervalDialogViewModelTests()
     {
         _logger = Substitute.For<ILogger<ChangeTimerIntervalDialogViewModel>>();
         _messageService = Substitute.For<IMessageService>();
+        _optionsService = Substitute.For<IOptionsService>();
+        _timerOptions = Substitute.For<IOptionsMonitor<TimerOptions>>();
 
-        _viewModel = new ChangeTimerIntervalDialogViewModel(_logger, _messageService);
+        var timerOptions = new TimerOptions
+        {
+            TimerInterval = TimeSpan.FromSeconds(10),
+            TimerMode = TimerOptions.TimerModesEnum.Single
+        };
+
+        _timerOptions.CurrentValue.Returns(timerOptions);
+
+        _viewModel = new ChangeTimerIntervalDialogViewModel(_logger, _messageService, _optionsService, _timerOptions);
     }
 
     [Fact]

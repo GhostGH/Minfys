@@ -15,7 +15,7 @@ public class OptionsDialogViewModelTests
     private AutoLaunchService _autoLaunchService;
     private IOptionsService _optionsService;
     private IOptionsMonitor<AudioOptions> _audioOptionsMonitor;
-    private IOptionsMonitor<TimerModesOptions> _timerModesOptionsMonitor;
+    private IOptionsMonitor<TimerOptions> _timerModesOptionsMonitor;
     private IOptionsMonitor<SystemOptions> _systemOptionsMonitor;
 
     public OptionsDialogViewModelTests()
@@ -24,7 +24,7 @@ public class OptionsDialogViewModelTests
         _autoLaunchService = Substitute.For<AutoLaunchService>();
         _optionsService = Substitute.For<IOptionsService>();
         _audioOptionsMonitor = Substitute.For<IOptionsMonitor<AudioOptions>>();
-        _timerModesOptionsMonitor = Substitute.For<IOptionsMonitor<TimerModesOptions>>();
+        _timerModesOptionsMonitor = Substitute.For<IOptionsMonitor<TimerOptions>>();
         _systemOptionsMonitor = Substitute.For<IOptionsMonitor<SystemOptions>>();
 
         var audioOptions = new AudioOptions
@@ -34,9 +34,10 @@ public class OptionsDialogViewModelTests
             Volume = 0.3f
         };
 
-        var timerModesOptions = new TimerModesOptions
+        var timerModesOptions = new TimerOptions
         {
-            TimerMode = TimerModesOptions.TimerModesEnum.Single
+            TimerInterval = TimeSpan.FromSeconds(10),
+            TimerMode = TimerOptions.TimerModesEnum.Single
         };
 
         var systemOptions = new SystemOptions
@@ -57,7 +58,7 @@ public class OptionsDialogViewModelTests
     public void TimerModeOptionChanged_IfNewModeIsLooping_DisableLoopOption()
     {
         // Arrange
-        _viewModel.TimerMode = TimerModesOptions.TimerModesEnum.Looping;
+        _viewModel.TimerMode = TimerOptions.TimerModesEnum.Looping;
         _viewModel.IsLoopOptionAvailable = true;
         _viewModel.LoopEnabled = true;
 
@@ -73,7 +74,7 @@ public class OptionsDialogViewModelTests
     public void TimerModeOptionChanged_IfNewModeIsNotLooping_EnableLoopOption()
     {
         // Arrange
-        _viewModel.TimerMode = TimerModesOptions.TimerModesEnum.Single;
+        _viewModel.TimerMode = TimerOptions.TimerModesEnum.Single;
 
         // Act
         _viewModel.TimerModeOptionChangedCommand.Execute(null);
