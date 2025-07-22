@@ -16,7 +16,9 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         AllowsTransparency="True"
+        Background="Transparent"
         Style="{StaticResource MaterialDesignWindow}">
+
     <Window.Resources>
         <Style x:Key="SettingBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="#383838"></Setter>
@@ -65,8 +67,11 @@
     </Window.Triggers>
 
     <Border
-        BorderBrush="#5c5c5c"
-        BorderThickness="2">
+        Background="{DynamicResource MaterialDesignPaper}"
+        BorderBrush="MediumPurple"
+        BorderThickness="2"
+        CornerRadius="8"
+        UseLayoutRounding="True">
 
         <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
@@ -79,7 +84,8 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Style="{StaticResource SettingBorderStyle}">
+            <Border Grid.Row="0" Style="{StaticResource SettingBorderStyle}"
+                    CornerRadius="8,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
