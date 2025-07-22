@@ -15,8 +15,10 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         AllowsTransparency="True"
+        Background="Transparent"
         Style="{StaticResource MaterialDesignWindow}"
         FocusManager.FocusedElement="{Binding ElementName=NewTimerIntervalMaskedTextBox}">
+
     <Window.Resources>
         <Style x:Key="ModernTextBox" TargetType="xctk:MaskedTextBox">
             <Setter Property="FontSize" Value="18" />
@@ -73,47 +75,57 @@
         </EventTrigger>
     </Window.Triggers>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0"
-                    Grid.Row="0"
-                    Grid.ColumnSpan="3"
-                    Orientation="Horizontal">
-            <TextBlock Text="Enter new value:"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Margin="5"
-                       FontSize="20" />
-            <xctk:MaskedTextBox Name="NewTimerIntervalMaskedTextBox"
-                                Style="{StaticResource ModernTextBox}"
-                                Mask="00:00:00"
-                                FontSize="20"
-                                Margin="5, 5, 5, 0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                PromptChar="0" />
-        </StackPanel>
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
-                    Orientation="Horizontal"
-                    Margin="5"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <Button Content="Accept"
-                    Background="MediumPurple" BorderBrush="MediumPurple"
-                    Margin="5" FontSize="15"
-                    Command="{Binding AcceptChangeCommand}"
-                    CommandParameter="{Binding Text, ElementName=NewTimerIntervalMaskedTextBox}" />
-            <Button Content="Cancel" Margin="5" FontSize="15"
-                    Command="{Binding CancelChangeCommand}" />
-        </StackPanel>
+    <Border
+        Background="{DynamicResource MaterialDesignPaper}"
+        BorderBrush="MediumPurple"
+        BorderThickness="2"
+        CornerRadius="8"
+        UseLayoutRounding="True">
 
-    </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="3"
+                        Orientation="Horizontal">
+                <TextBlock Text="Enter new value:"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="5"
+                           FontSize="20" />
+                <xctk:MaskedTextBox Name="NewTimerIntervalMaskedTextBox"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Mask="00:00:00"
+                                    FontSize="20"
+                                    Margin="5, 5, 5, 0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    PromptChar="0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                        Orientation="Horizontal"
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Button Content="Accept"
+                        Background="MediumPurple" BorderBrush="MediumPurple"
+                        Margin="5" FontSize="15"
+                        Command="{Binding AcceptChangeCommand}"
+                        CommandParameter="{Binding Text, ElementName=NewTimerIntervalMaskedTextBox}" />
+                <Button Content="Cancel" Margin="5" FontSize="15"
+                        Command="{Binding CancelChangeCommand}" />
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </Window>
