@@ -1,5 +1,8 @@
 ﻿namespace Minfys.Models.Options;
 
+/// <summary>
+/// Contains all settings for userPreferences.json.
+/// </summary>
 public class UserPreferences
 {
     public AudioOptions AudioOptions { get; set; } = new();
