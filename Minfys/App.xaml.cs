@@ -110,7 +110,7 @@ public partial class App : Application
         }
         finally
         {
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
             _host.Dispose();
         }
 
