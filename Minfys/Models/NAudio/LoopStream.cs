@@ -2,6 +2,9 @@
 
 namespace Minfys.Models.NAudio;
 
+/// <summary>
+/// Stream for looping audio.
+/// </summary>
 public class LoopStream : WaveStream
 {
     private readonly WaveStream _sourceStream;
