@@ -7,6 +7,9 @@ using Minfys.Services;
 
 namespace Minfys.ViewModels.Dialogs;
 
+/// <summary>
+/// Manages dialog window for changing app settings using OptionsService.
+/// </summary>
 public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewModel<object>
 {
     private readonly ILogger<OptionsDialogViewModel> _logger;
@@ -68,6 +71,10 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
 
+    /// <summary>
+    /// Processes "Timer Mode" option change — updates value in configuration.
+    /// Manages availability of audio loop option in the UI, depending on timer mode value.
+    /// </summary>
     [RelayCommand]
     private void TimerModeOptionChanged()
     {
@@ -89,6 +96,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _timerOptions.TimerMode = TimerMode;
     }
 
+    /// <summary>
+    /// Processes "Loop" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void LoopOptionChanged()
     {
@@ -98,6 +108,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _audioOptions.LoopEnabled = LoopEnabled;
     }
 
+    /// <summary>
+    /// Processes "Close to Tray" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void TrayOptionChanged()
     {
@@ -107,6 +120,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _systemOptions.EnableCloseToTray = TrayEnabled;
     }
 
+    /// <summary>
+    /// Processes "Auto Launch" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void AutoLaunchOptionChanged()
     {
@@ -116,6 +132,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _systemOptions.EnableAutoLaunch = AutoLaunchEnabled;
     }
 
+    /// <summary>
+    /// Saves all settings to userPreferences.json.
+    /// </summary>
     [RelayCommand]
     private void SaveSettings()
     {
@@ -134,6 +153,9 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         CloseWindow();
     }
 
+    /// <summary>
+    /// Closes the dialog window.
+    /// </summary>
     [RelayCommand]
     private void CloseWindow()
     {
@@ -142,5 +164,8 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<object>(true));
     }
 
+    /// <summary>
+    /// Executes on dialog close. Contains dialog result and new interval value.
+    /// </summary>
     public event EventHandler<RequestCloseDialogEventArgs<object>>? RequestClose;
 }
