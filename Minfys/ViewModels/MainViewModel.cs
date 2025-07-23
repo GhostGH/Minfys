@@ -12,6 +12,9 @@ using NAudio.Wave;
 
 namespace Minfys.ViewModels;
 
+/// <summary>
+/// Manages main application window with timer.
+/// </summary>
 public partial class MainViewModel : ViewModelBase
 {
     private const string TimeFormat = @"hh\:mm\:ss";
@@ -82,7 +85,9 @@ public partial class MainViewModel : ViewModelBase
         _logger.LogInformation("{ViewModel} created", nameof(MainViewModel));
     }
 
-    // Commands
+    /// <summary>
+    /// Opens dialog for changing timer interval value. Updates the interval, if the value is new.
+    /// </summary>
     [RelayCommand]
     private void ChangeInterval()
     {
@@ -104,6 +109,9 @@ public partial class MainViewModel : ViewModelBase
         _logger.LogInformation("Command: {Command} | Result: {Result}", nameof(ChangeIntervalCommand), result);
     }
 
+    /// <summary>
+    /// Starts the timer.
+    /// </summary>
     [RelayCommand]
     private void StartTimer()
     {
@@ -129,6 +137,9 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Stops the timer.
+    /// </summary>
     [RelayCommand]
     private void StopTimer()
     {
@@ -140,13 +151,17 @@ public partial class MainViewModel : ViewModelBase
         StopTimerButtonEnabled = false;
     }
 
+    /// <summary>
+    /// Opens settings dialog.
+    /// </summary>
     [RelayCommand]
     private void OpenOptions()
     {
         _dialogService.ShowDialog<OptionsDialogViewModel, object>();
     }
 
-    // Event Handles
+    #region Event Handlers
+
     private void TimerOnTick(object? sender, EventArgs e)
     {
         _remainingSeconds--;
@@ -177,7 +192,10 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    // Private Methods
+    #endregion
+
+    #region Private Methods
+
     private void TimerFire()
     {
         _logger.LogInformation("Timer fired");
@@ -257,4 +275,6 @@ public partial class MainViewModel : ViewModelBase
         _stream?.Dispose();
         _stream = null;
     }
+
+    #endregion
 }
