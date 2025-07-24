@@ -2,11 +2,15 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minfys.ExtensionMethods.Extensions;
 using Minfys.Models.Options;
 using Minfys.Services;
 
 namespace Minfys.ViewModels.Dialogs;
 
+/// <summary>
+/// Manages dialog window for changing app settings using OptionsService.
+/// </summary>
 public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewModel<object>
 {
     private readonly ILogger<OptionsDialogViewModel> _logger;
@@ -62,17 +66,19 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _autoLaunchEnabled = _systemOptions.EnableAutoLaunch;
 
         _timerMode = _timerOptions.TimerMode;
-        // lol
         _isLoopOptionAvailable = (TimerMode != TimerOptions.TimerModesEnum.Looping);
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
     }
 
+    /// <summary>
+    /// Processes "Timer Mode" option change — updates value in configuration.
+    /// Manages availability of audio loop option in the UI, depending on timer mode value.
+    /// </summary>
     [RelayCommand]
     private void TimerModeOptionChanged()
     {
-        _logger.LogInformation("Timer mode changed | ViewModel: {ViewModel}, NewValue: {TimerMode}",
-            nameof(OptionsDialogViewModel), TimerMode);
+        _logger.LogInformation("Timer mode changed. New value: {TimerMode}", TimerMode);
 
         if (TimerMode == TimerOptions.TimerModesEnum.Looping)
         {
@@ -89,38 +95,46 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _timerOptions.TimerMode = TimerMode;
     }
 
+    /// <summary>
+    /// Processes "Loop" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void LoopOptionChanged()
     {
-        _logger.LogInformation("Loop option changed | ViewModel: {ViewModel}, NewValue: {LoopEnabled}",
-            nameof(OptionsDialogViewModel), LoopEnabled);
+        _logger.LogInformation("Loop option changed. New value: {LoopEnabled}", LoopEnabled);
 
         _audioOptions.LoopEnabled = LoopEnabled;
     }
 
+    /// <summary>
+    /// Processes "Close to Tray" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void TrayOptionChanged()
     {
-        _logger.LogInformation("Tray option changed | ViewModel: {ViewModel}, NewValue: {TrayEnabled}",
-            nameof(OptionsDialogViewModel), TrayEnabled);
+        _logger.LogInformation("Tray option changed. New value: {TrayEnabled}", TrayEnabled);
 
         _systemOptions.EnableCloseToTray = TrayEnabled;
     }
 
+    /// <summary>
+    /// Processes "Auto Launch" option change — updates value in configuration.
+    /// </summary>
     [RelayCommand]
     private void AutoLaunchOptionChanged()
     {
-        _logger.LogInformation("Auto launch option changed | ViewModel: {ViewModel}, NewValue: {AutoLaunchEnabled}",
-            nameof(OptionsDialogViewModel), AutoLaunchEnabled);
+        _logger.LogInformation("Auto launch option changed. New value: {AutoLaunchEnabled}", AutoLaunchEnabled);
 
         _systemOptions.EnableAutoLaunch = AutoLaunchEnabled;
     }
 
+    /// <summary>
+    /// Saves all settings to userPreferences.json.
+    /// </summary>
     [RelayCommand]
     private void SaveSettings()
     {
-        _logger.LogInformation("User pressed button to save settings | ViewModel: {ViewModel}",
-            nameof(OptionsDialogViewModel));
+        _logger.LogCommandExecution();
 
         // It's here because Slider and NAudio use different variables, so no binding property for this one
         _audioOptions.Volume = AudioVolume;
@@ -132,15 +146,25 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _optionsService.Save(_systemOptions, SystemOptions.Key);
 
         CloseWindow();
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Closes the dialog window.
+    /// </summary>
     [RelayCommand]
     private void CloseWindow()
     {
-        _logger.LogInformation("Closing settings | ViewModel: {ViewModel}", nameof(OptionsDialogViewModel));
+        _logger.LogCommandExecution();
 
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<object>(true));
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Executes on dialog close. Contains dialog result and new interval value.
+    /// </summary>
     public event EventHandler<RequestCloseDialogEventArgs<object>>? RequestClose;
 }

@@ -220,6 +220,7 @@
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
 
+        <!-- Settings button -->
         <Button
             DockPanel.Dock="Top"
             HorizontalAlignment="Left"
@@ -229,12 +230,16 @@
             Command="{Binding OpenOptionsCommand}">
             <materialDesign:PackIcon Kind="Settings" />
         </Button>
+
+        <!-- Change interval button -->
         <Button DockPanel.Dock="Bottom" HorizontalAlignment="Center"
                 Style="{StaticResource IntervalButtonStyle}"
                 Content="Change the interval"
                 Margin="0,0,0,16"
                 FontSize="20"
                 Command="{Binding ChangeIntervalCommand}" />
+
+        <!-- Start/Stop buttons -->
         <StackPanel DockPanel.Dock="Bottom"
                     HorizontalAlignment="Center" Orientation="Horizontal"
                     Margin="5">
@@ -255,6 +260,8 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+
+        <!-- Timer counter and timer interval text -->
         <Grid>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                        Text="{Binding DisplayTime}"

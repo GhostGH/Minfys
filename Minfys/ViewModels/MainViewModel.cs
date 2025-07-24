@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minfys.ExtensionMethods.Extensions;
 using Minfys.Models.NAudio;
 using Minfys.Models.Options;
 using Minfys.Services;
@@ -12,6 +13,9 @@ using NAudio.Wave;
 
 namespace Minfys.ViewModels;
 
+/// <summary>
+/// Manages main application window with timer.
+/// </summary>
 public partial class MainViewModel : ViewModelBase
 {
     private const string TimeFormat = @"hh\:mm\:ss";
@@ -82,11 +86,13 @@ public partial class MainViewModel : ViewModelBase
         _logger.LogInformation("{ViewModel} created", nameof(MainViewModel));
     }
 
-    // Commands
+    /// <summary>
+    /// Opens dialog for changing timer interval value. Updates the interval, if the value is new.
+    /// </summary>
     [RelayCommand]
     private void ChangeInterval()
     {
-        _logger.LogInformation("Command: {Command} activated", nameof(ChangeIntervalCommand));
+        _logger.LogCommandExecution();
 
         var result = _dialogService.ShowDialog<ChangeTimerIntervalDialogViewModel, TimeSpan?>();
 
@@ -101,12 +107,17 @@ public partial class MainViewModel : ViewModelBase
             }
         }
 
-        _logger.LogInformation("Command: {Command} | Result: {Result}", nameof(ChangeIntervalCommand), result);
+        _logger.LogCommandExecutedWithResult(result);
     }
 
+    /// <summary>
+    /// Starts the timer.
+    /// </summary>
     [RelayCommand]
     private void StartTimer()
     {
+        _logger.LogCommandExecution();
+
         if (StopTimerButtonEnabled == false)
             StopTimerButtonEnabled = true;
 
@@ -126,27 +137,48 @@ public partial class MainViewModel : ViewModelBase
                 _timer.Start();
                 CurrentStartButtonState = StartButtonState.Pause;
                 break;
+            default:
+                var ex = new ArgumentOutOfRangeException();
+                _logger.LogCritical(ex, "{Message}", ex.Message);
+                throw ex;
         }
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Stops the timer.
+    /// </summary>
     [RelayCommand]
     private void StopTimer()
     {
+        _logger.LogCommandExecution();
+
         _timer.Stop();
         _logger.LogInformation("Timer has been forcefully stopped with remaining time {Time}", _remainingSeconds);
         _remainingSeconds = (int)CurrentInterval.TotalSeconds;
         DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
         CurrentStartButtonState = StartButtonState.Start;
         StopTimerButtonEnabled = false;
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Opens settings dialog.
+    /// </summary>
     [RelayCommand]
     private void OpenOptions()
     {
+        _logger.LogCommandExecution();
+
         _dialogService.ShowDialog<OptionsDialogViewModel, object>();
+
+        _logger.LogCommandExecuted();
     }
 
-    // Event Handles
+    #region Event Handlers
+
     private void TimerOnTick(object? sender, EventArgs e)
     {
         _remainingSeconds--;
@@ -177,7 +209,10 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    // Private Methods
+    #endregion
+
+    #region Private Methods
+
     private void TimerFire()
     {
         _logger.LogInformation("Timer fired");
@@ -237,7 +272,7 @@ public partial class MainViewModel : ViewModelBase
         {
             StopSound();
             _logger.LogCritical(ex,
-                "Probably failed to play audio on timer fired: the resource stream for default audio file is null somehow");
+                "{Message}", ex.Message);
             _messageService.ShowError("An Error has occured. See application logs in ~App Data/Roaming/Minfys/logs");
         }
     }
@@ -257,4 +292,6 @@ public partial class MainViewModel : ViewModelBase
         _stream?.Dispose();
         _stream = null;
     }
+
+    #endregion
 }

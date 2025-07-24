@@ -2,11 +2,15 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minfys.ExtensionMethods.Extensions;
 using Minfys.Models.Options;
 using Minfys.Services;
 
 namespace Minfys.ViewModels.Dialogs;
 
+/// <summary>
+/// Manages dialog window for changing timer interval. Sends new interval value to the caller and saves it to the app settings.
+/// </summary>
 public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IRequestCloseViewModel<TimeSpan?>
 {
     private readonly ILogger<ChangeTimerIntervalDialogViewModel> _logger;
@@ -28,9 +32,15 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
         _logger.LogInformation("{ViewModel} created", nameof(ChangeTimerIntervalDialogViewModel));
     }
 
+    /// <summary>
+    /// Passes new interval value to the caller viewmodel and saves it to the settings.
+    /// </summary>
+    /// <param name="textValue">New interval value.</param>
     [RelayCommand]
     private void AcceptChange(string? textValue)
     {
+        _logger.LogCommandExecution();
+
         if (TimeSpan.TryParse(textValue, out var ts))
         {
             _timerOptions.TimerInterval = ts;
@@ -41,16 +51,27 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
         else
         {
             _messageService.ShowError("Invalid time interval value. Try again.");
-            _logger.LogInformation("Interval change unsuccessful with the value: {NewInterval}", textValue);
+            _logger.LogError("Interval change unsuccessful with the value: {NewInterval}", textValue);
         }
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Cancels interval change and closes the window.
+    /// </summary>
     [RelayCommand]
     private void CancelChange()
     {
-        _logger.LogInformation("Interval change was cancelled by the user");
-        RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(false, null));
+        _logger.LogCommandExecution();
+
+        RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(false));
+
+        _logger.LogCommandExecuted();
     }
 
+    /// <summary>
+    /// Executes on dialog close. Contains dialog result and new interval value.
+    /// </summary>
     public event EventHandler<RequestCloseDialogEventArgs<TimeSpan?>>? RequestClose;
 }
