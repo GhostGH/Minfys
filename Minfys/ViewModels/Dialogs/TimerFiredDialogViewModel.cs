@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Minfys.ExtensionMethods.Extensions;
 
 namespace Minfys.ViewModels.Dialogs;
 
@@ -23,9 +24,11 @@ public partial class TimerFiredDialogViewModel : ViewModelBase, IRequestCloseVie
     [RelayCommand]
     private void ResetTimer()
     {
-        _logger.LogInformation("In {ViewModel}, user pressed button to reset timer", nameof(TimerFiredDialogViewModel));
+        _logger.LogCommandExecution();
 
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<bool>(true, true));
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
@@ -34,9 +37,11 @@ public partial class TimerFiredDialogViewModel : ViewModelBase, IRequestCloseVie
     [RelayCommand]
     private void StopTimer()
     {
-        _logger.LogInformation("In {ViewModel}, user pressed button to stop timer", nameof(TimerFiredDialogViewModel));
+        _logger.LogCommandExecution();
 
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<bool>(false, false));
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
