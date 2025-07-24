@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minfys.ExtensionMethods.Extensions;
 using Minfys.Models.Options;
 using Minfys.Services;
 
@@ -38,6 +39,8 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
     [RelayCommand]
     private void AcceptChange(string? textValue)
     {
+        _logger.LogCommandExecution();
+
         if (TimeSpan.TryParse(textValue, out var ts))
         {
             _timerOptions.TimerInterval = ts;
@@ -48,8 +51,10 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
         else
         {
             _messageService.ShowError("Invalid time interval value. Try again.");
-            _logger.LogInformation("Interval change unsuccessful with the value: {NewInterval}", textValue);
+            _logger.LogError("Interval change unsuccessful with the value: {NewInterval}", textValue);
         }
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
@@ -58,8 +63,11 @@ public partial class ChangeTimerIntervalDialogViewModel : ViewModelBase, IReques
     [RelayCommand]
     private void CancelChange()
     {
-        _logger.LogInformation("Interval change was cancelled by the user");
+        _logger.LogCommandExecution();
+
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<TimeSpan?>(false));
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
