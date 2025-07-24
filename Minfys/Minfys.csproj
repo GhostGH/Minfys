@@ -61,4 +61,8 @@
         <None Remove="Assets\Tray.ico"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Minfys.ExtensionMethods\Minfys.ExtensionMethods.csproj"/>
+    </ItemGroup>
+
 </Project>
