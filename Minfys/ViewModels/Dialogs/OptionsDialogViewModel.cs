@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minfys.ExtensionMethods.Extensions;
 using Minfys.Models.Options;
 using Minfys.Services;
 
@@ -65,7 +66,6 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _autoLaunchEnabled = _systemOptions.EnableAutoLaunch;
 
         _timerMode = _timerOptions.TimerMode;
-        // lol
         _isLoopOptionAvailable = (TimerMode != TimerOptions.TimerModesEnum.Looping);
 
         _logger.LogInformation("{ViewModel} created", nameof(OptionsDialogViewModel));
@@ -78,8 +78,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void TimerModeOptionChanged()
     {
-        _logger.LogInformation("Timer mode changed | ViewModel: {ViewModel}, NewValue: {TimerMode}",
-            nameof(OptionsDialogViewModel), TimerMode);
+        _logger.LogInformation("Timer mode changed. New value: {TimerMode}", TimerMode);
 
         if (TimerMode == TimerOptions.TimerModesEnum.Looping)
         {
@@ -102,8 +101,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void LoopOptionChanged()
     {
-        _logger.LogInformation("Loop option changed | ViewModel: {ViewModel}, NewValue: {LoopEnabled}",
-            nameof(OptionsDialogViewModel), LoopEnabled);
+        _logger.LogInformation("Loop option changed. New value: {LoopEnabled}", LoopEnabled);
 
         _audioOptions.LoopEnabled = LoopEnabled;
     }
@@ -114,8 +112,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void TrayOptionChanged()
     {
-        _logger.LogInformation("Tray option changed | ViewModel: {ViewModel}, NewValue: {TrayEnabled}",
-            nameof(OptionsDialogViewModel), TrayEnabled);
+        _logger.LogInformation("Tray option changed. New value: {TrayEnabled}", TrayEnabled);
 
         _systemOptions.EnableCloseToTray = TrayEnabled;
     }
@@ -126,8 +123,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void AutoLaunchOptionChanged()
     {
-        _logger.LogInformation("Auto launch option changed | ViewModel: {ViewModel}, NewValue: {AutoLaunchEnabled}",
-            nameof(OptionsDialogViewModel), AutoLaunchEnabled);
+        _logger.LogInformation("Auto launch option changed. New value: {AutoLaunchEnabled}", AutoLaunchEnabled);
 
         _systemOptions.EnableAutoLaunch = AutoLaunchEnabled;
     }
@@ -138,8 +134,7 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void SaveSettings()
     {
-        _logger.LogInformation("User pressed button to save settings | ViewModel: {ViewModel}",
-            nameof(OptionsDialogViewModel));
+        _logger.LogCommandExecution();
 
         // It's here because Slider and NAudio use different variables, so no binding property for this one
         _audioOptions.Volume = AudioVolume;
@@ -151,6 +146,8 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
         _optionsService.Save(_systemOptions, SystemOptions.Key);
 
         CloseWindow();
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
@@ -159,9 +156,11 @@ public partial class OptionsDialogViewModel : ViewModelBase, IRequestCloseViewMo
     [RelayCommand]
     private void CloseWindow()
     {
-        _logger.LogInformation("Closing settings | ViewModel: {ViewModel}", nameof(OptionsDialogViewModel));
+        _logger.LogCommandExecution();
 
         RequestClose?.Invoke(this, new RequestCloseDialogEventArgs<object>(true));
+
+        _logger.LogCommandExecuted();
     }
 
     /// <summary>
