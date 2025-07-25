@@ -118,6 +118,16 @@ public partial class MainViewModel : ViewModelBase
     {
         _logger.LogCommandExecution();
 
+        if (CurrentInterval == TimeSpan.Zero)
+        {
+            _messageService.ShowError(
+                "Time interval cannot be set to 0. Press \"Change interval\" button to specify a timer interval.");
+            _logger.LogWarning("Attempted to start timer with 0 interval. Cancelling operation.");
+            _logger.LogCommandExecuted();
+
+            return;
+        }
+
         if (StopTimerButtonEnabled == false)
             StopTimerButtonEnabled = true;
 

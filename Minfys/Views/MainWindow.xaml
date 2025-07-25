@@ -234,7 +234,7 @@
         <!-- Change interval button -->
         <Button DockPanel.Dock="Bottom" HorizontalAlignment="Center"
                 Style="{StaticResource IntervalButtonStyle}"
-                Content="Change the interval"
+                Content="Change interval"
                 Margin="0,0,0,16"
                 FontSize="20"
                 Command="{Binding ChangeIntervalCommand}" />
