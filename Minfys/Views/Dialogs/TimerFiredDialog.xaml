@@ -11,10 +11,15 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent"
         Style="{StaticResource MaterialDesignWindow}">
     <Border
-        BorderBrush="#5c5c5c"
-        BorderThickness="2">
+        Background="{DynamicResource MaterialDesignPaper}"
+        BorderBrush="MediumPurple"
+        BorderThickness="2"
+        CornerRadius="8"
+        UseLayoutRounding="True">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
