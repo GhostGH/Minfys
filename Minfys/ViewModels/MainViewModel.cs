@@ -100,7 +100,7 @@ public partial class MainViewModel : ViewModelBase
         {
             CurrentInterval = (TimeSpan)result.Result;
 
-            if (!_timer.IsEnabled)
+            if (CurrentStartButtonState == StartButtonState.Start)
             {
                 _remainingSeconds = (int)CurrentInterval.TotalSeconds;
                 DisplayTime = TimeSpan.FromSeconds(_remainingSeconds).ToString(TimeFormat);
@@ -129,7 +129,7 @@ public partial class MainViewModel : ViewModelBase
 
                     break;
                 }
-                
+
                 if (StopTimerButtonEnabled == false)
                     StopTimerButtonEnabled = true;
 
