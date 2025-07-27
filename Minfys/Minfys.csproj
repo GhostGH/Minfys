@@ -48,9 +48,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
         <None Remove="Assets\Audio\default_song.mp3"/>
-        <Resource Include="Assets\Audio\default_song.mp3">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Resource>
     </ItemGroup>
 
     <ItemGroup>
@@ -63,6 +60,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Minfys.ExtensionMethods\Minfys.ExtensionMethods.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Assets\Audio\"/>
     </ItemGroup>
 
 </Project>
