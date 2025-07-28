@@ -11,7 +11,7 @@ public class AudioOptions
     /// Full path to the audio file that will be played as a notification.
     /// </summary>
     public string FilePath { get; set; } =
-        "//Assets//Audio//default_song.mp3";
+        "//Assets//Audio//default_audio.mp3";
 
     /// <summary>
     /// Indicates whether the audio should loop when played.

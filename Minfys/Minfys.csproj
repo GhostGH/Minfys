@@ -47,7 +47,11 @@
         <Resource Include="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
-        <None Remove="Assets\Audio\default_song.mp3"/>
+        <None Remove="Assets\Audio\default_audio.mp3"/>
+        <None Remove="Assets\Audio\default_audio.mp3"/>
+        <Resource Include="Assets\Audio\default_audio.mp3">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Resource>
     </ItemGroup>
 
     <ItemGroup>
@@ -60,10 +64,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Minfys.ExtensionMethods\Minfys.ExtensionMethods.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Assets\Audio\"/>
     </ItemGroup>
 
 </Project>

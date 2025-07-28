@@ -68,7 +68,7 @@ public partial class MainViewModel : ViewModelBase
         CurrentStartButtonState = StartButtonState.Start;
         StopTimerButtonEnabled = false;
 
-        _defaultAudioFilePath = new Uri("pack://application:,,,/Minfys;component/Assets/Audio/default_song.mp3",
+        _defaultAudioFilePath = new Uri("pack://application:,,,/Minfys;component/Assets/Audio/default_audio.mp3",
             UriKind.Absolute);
 
         _timer = new DispatcherTimer
