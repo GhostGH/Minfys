@@ -22,15 +22,15 @@ Minfys uses a simple, customizable timer that chimes at intervals you set, gentl
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/b7ada53f-93aa-4b7d-b694-92457cd70eca" alt="Minfys Main Menu" width="300" /><br>
+      <img src="https://github.com/user-attachments/assets/3297b0d8-f8d7-4185-8513-70769ee37b2c" alt="Minfys Main Menu" width="300" /><br>
       Main Menu
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/356d0250-5625-4966-a6ff-f137a4f50d39" alt="Minfys Settings" width="300" /><br>
+      <img src="https://github.com/user-attachments/assets/492e8204-de5a-4ff4-b77c-7a47ec75cfc8" alt="Minfys Settings" width="300" /><br>
       Settings
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/eb4a6377-2c2e-43b7-95b5-736d659aacc3" alt="Minfys Reminder Popup" width="300" /><br>
+      <img src="https://github.com/user-attachments/assets/d0c3fef2-f378-4d8b-9dc5-4717d6547b6e" alt="Minfys Reminder Popup" width="300" /><br>
       Reminder Popup
     </td>
   </tr>
